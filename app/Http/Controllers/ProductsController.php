@@ -10,7 +10,7 @@ class ProductsController extends Controller
     public function index(Request $request)
     {
         return view('products.index', [
-            'products' => Product::query()->get()->toArray(),
+            'products' => Product::all(),
         ]);
     }
 }

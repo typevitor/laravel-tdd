@@ -33,7 +33,7 @@
                             </tr>
                         @empty
                             <td colspan="2" class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
-                                No products found
+                                {{ __('No products found') }}
                             </td>
                         @endforelse
                         </tbody>
