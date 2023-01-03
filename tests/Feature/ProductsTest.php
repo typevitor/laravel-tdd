@@ -36,10 +36,13 @@ class ProductsTest extends TestCase
             'password' => 'password',
         ]);
 
-        Product::create(['name' => 'product_test', 'price' => 10]);
+        $product = Product::create(['name' => 'product_test', 'price' => 10]);
 
         $response = $this->get('/products');
         $response->assertStatus(200);
         $response->assertDontSee(__('No products found'));
+        $response->assertViewHas('products', function($collection) use ($product) {
+            return $collection->contains($product);
+        });
     }
 }
