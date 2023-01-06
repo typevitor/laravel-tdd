@@ -49,17 +49,9 @@ class ProductsTest extends TestCase
     public function test_paginate_products_list_doesnt_contain_11th_record()
     {
         $user = User::factory()->create();
-
-        $this->actingAs($user)
-        ->post('/login', [
-            'email' => 'test@example.com',
-            'password' => 'password',
-        ]);
-
         $products = Product::factory(11)->create();
         $lastProduct = $products->last();
-
-        $response = $this->get('/products');
+        $response = $this->actingAs($user)->get('/products');
         $response->assertStatus(200);
         $response->assertDontSee(__('No products found'));
         $response->assertViewHas('products', function($collection) use ($lastProduct) {
