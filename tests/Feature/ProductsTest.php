@@ -43,4 +43,12 @@ class ProductsTest extends TestCase
             return !$collection->contains($lastProduct);
         });
     }
+
+    public function test_products_redirects_if_not_logged_in()
+    {
+        $products = Product::factory(11)->create();
+        $response = $this->get('/products');
+        $response->assertStatus(302);
+        $response->assertRedirect('/login');
+    }
 }
