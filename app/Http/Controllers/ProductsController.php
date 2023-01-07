@@ -13,4 +13,14 @@ class ProductsController extends Controller
             'products' => Product::paginate(10),
         ]);
     }
+
+    public function create(Request $request)
+    {
+        return ['status' => 'ok'];
+    }
+
+    public function store(Request $request)
+    {
+        return ['status' => 'ok'];
+    }
 }

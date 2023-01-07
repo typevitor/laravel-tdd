@@ -46,9 +46,39 @@ class ProductsTest extends TestCase
 
     public function test_products_redirects_if_not_logged_in()
     {
-        $products = Product::factory(11)->create();
+        Product::factory(11)->create();
         $response = $this->get('/products');
         $response->assertStatus(302);
         $response->assertRedirect('/login');
+    }
+
+    public function test_admin_can_see_products_create_button()
+    {
+        $admin = User::factory()->create(['is_admin' => true]);
+        $response = $this->actingAs($admin)->get('/products');
+        $response->assertStatus(200);
+        $response->assertSee(__('Add Product'));
+    }
+
+    public function test_non_admin_cannot_see_products_create_button()
+    {
+        $user = User::factory()->create();
+        $response = $this->actingAs($user)->get('/products');
+        $response->assertStatus(200);
+        $response->assertDontSee(__('Add Product'));
+    }
+
+    public function test_admin_can_access_products_create_page()
+    {
+        $admin = User::factory()->create(['is_admin' => true]);
+        $response = $this->actingAs($admin)->get('/products/create');
+        $response->assertStatus(200);
+    }
+
+    public function test_non_admin_cannot_access_product_create_page()
+    {
+        $user = User::factory()->create();
+        $response = $this->actingAs($user)->get('/products/create');
+        $response->assertStatus(403);
     }
 }
