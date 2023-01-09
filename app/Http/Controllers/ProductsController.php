@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreProductRequest;
+use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -25,5 +26,17 @@ class ProductsController extends Controller
         $data = $request->validated();
         Product::create($data);
         return redirect()->route('products.index');
+    }
+
+    public function edit(Product $product)
+    {
+        return view('products.edit', compact('product'));
+    }
+
+    public function update(UpdateProductRequest $request, Product $product)
+    {
+        $data = $request->validated();
+        $product->update($data);
+        return redirect()->route('products.update');
     }
 }
