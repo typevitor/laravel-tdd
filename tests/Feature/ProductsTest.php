@@ -105,4 +105,13 @@ class ProductsTest extends TestCase
         $this->assertEquals($product['name'], $lastProduct->name);
         $this->assertEquals($product['price'], $lastProduct->price);
     }
+
+    public function test_edit_product_form_contain_correct_values()
+    {
+        $product = Product::factory()->create();
+        $response = $this->actingAs($this->admin)->get('/products/'.$product->id.'/edit');
+        $response->assertStatus(200);
+        $response->assertSee('value="'.$product->name.'"', escape: false);
+        $response->assertSee('value="'.$product->price.'"', escape: false);
+    }
 }
