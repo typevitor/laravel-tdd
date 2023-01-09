@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreProductRequest;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -16,11 +17,13 @@ class ProductsController extends Controller
 
     public function create(Request $request)
     {
-        return ['status' => 'ok'];
+        return view('products.create');
     }
 
-    public function store(Request $request)
+    public function store(StoreProductRequest $request)
     {
-        return ['status' => 'ok'];
+        $data = $request->validated();
+        Product::create($data);
+        return redirect()->route('products.index');
     }
 }
