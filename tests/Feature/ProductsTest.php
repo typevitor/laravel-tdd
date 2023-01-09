@@ -113,6 +113,6 @@ class ProductsTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('value="'.$product->name.'"', escape: false);
         $response->assertSee('value="'.$product->price.'"', escape: false);
-        $response->assertViewHas($product);
+        $response->assertViewHas('product', $product);
     }
 }
