@@ -37,6 +37,6 @@ class ProductsController extends Controller
     {
         $data = $request->validated();
         $product->update($data);
-        return redirect()->route('products.update');
+        return redirect()->route('products.index');
     }
 }
