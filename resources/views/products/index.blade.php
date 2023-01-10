@@ -36,6 +36,11 @@
                                 @if(auth()->user()->is_admin)
                                     <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-900">
                                         <a href="{{route('products.edit', $product)}}" class="mb-4 inline-flex items-center px-4 py-2 bg-orange-400">Edit</a>
+                                        <form action="{{route('products.destroy', $product)}}" method="post" class="inline-block">
+                                            @csrf
+                                            @method('DELETE')
+                                            <x-primary-button onclick="return confirm('Are you sure?')" class="bg-red-600 text-white" >Delete</x-primary-button>
+                                        </form>
                                     </td>
                                 @endif
                             </tr>
