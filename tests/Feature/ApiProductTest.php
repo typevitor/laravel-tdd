@@ -32,4 +32,14 @@ class ApiProductTest extends TestCase
         $response->assertStatus(201);
         $response->assertJson($product);
     }
+
+    public function test_api_invalid_products_returns_errors()
+    {
+        $product = [
+            'name' => '',
+            'price' => 123,
+        ];
+        $response = $this->postJson('/api/products', $product);
+        $response->assertStatus(422);
+    }
 }
