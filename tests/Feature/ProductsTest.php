@@ -127,4 +127,14 @@ class ProductsTest extends TestCase
         $response->assertSessionHasErrors(['name']);
         $response->assertInvalid(['name']);
     }
+
+    public function test_product_delete_product_successful()
+    {
+        $product = Product::factory()->create();
+        $response = $this->actingAs($this->admin)->delete('/products/'.$product->id);
+        $response->assertStatus(302);
+        $response->assertRedirect('/products');
+        $this->assertDatabaseMissing('products', $product->toArray());
+        $this->assertDatabaseCount('products', 0);
+    }
 }
