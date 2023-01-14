@@ -1,7 +1,5 @@
 <?php
 
-test('example', function () {
-    $response = $this->get('/');
-
-    $response->assertStatus(200);
-});
+test('unauthenticaded user cannot access products')
+    ->get('/products')
+    ->assertRedirect('login');
