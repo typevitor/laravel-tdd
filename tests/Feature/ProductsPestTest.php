@@ -1,7 +1,7 @@
 <?php
 
 beforeEach(function() {
-    $this->user = \App\Models\User::factory()->create();
+    $this->user = createUser(isAdmin: false);
 });
 
 test('products list is empyy', function () {
