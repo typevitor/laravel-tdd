@@ -112,7 +112,7 @@ class ProductsTest extends TestCase
         $response = $this->actingAs($this->admin)->get('/products/'.$product->id.'/edit');
         $response->assertStatus(200);
         $response->assertSee('value="'.$product->name.'"', escape: false);
-        //$response->assertSee('value="'.$product->price.'"', escape: false);
+        $response->assertSee('value="'.$product->price.'.00"', escape: false);
         $response->assertViewHas('product', $product);
     }
 
