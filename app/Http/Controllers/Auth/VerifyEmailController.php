@@ -22,7 +22,7 @@ class VerifyEmailController extends Controller
         }
 
         if ($request->user()->markEmailAsVerified()) {
-            event(new Verified($request->user()));
+            event(new Verified($request->user())); //@phpstan-ignore argument.type
         }
 
         return redirect()->intended(RouteServiceProvider::HOME.'?verified=1');

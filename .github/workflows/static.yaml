@@ -3,7 +3,7 @@ name: CI
 on: [push]
 
 jobs:
-  build:
+  static:
     runs-on: ubuntu-latest
 
     steps:
@@ -21,5 +21,6 @@ jobs:
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist --ansi
 
-      - name: Run tests
-        run: php artisan test
+      - name: Run Static Analysis
+        run: ./vendor/bin/phpstan --error-format=github
+
