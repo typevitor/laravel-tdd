@@ -8,12 +8,22 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+
+    env:
+      APP_ENV: testing
+      DB_CONNECTION: mysql
+      DB_HOST: 127.0.0.1
+      DB_PORT: 3306
+      DB_DATABASE: laravel_test
+      DB_USERNAME: root
+      DB_PASSWORD: password
+
     services:
       mysql:
         image: mysql:8.0.30-debian
         env:
           MYSQL_ROOT_PASSWORD: password
-          MYSQL_DATABASE: test
+          MYSQL_DATABASE: laravel_test
         ports:
           - 3306:3306
         options: >-
@@ -45,15 +55,6 @@ jobs:
 
       - name: Storage Permission
         run: chmod -R 777 storage bootstrap/cache
-
-      - name: Update Database Configuration
-        run: |
-          sed -i 's/APP_ENV=local/APP_ENV=testing/g' .env
-          sed -i 's/DB_HOST=127.0.0.1/DB_HOST=127.0.0.1/g' .env
-          sed -i 's/DB_DATABASE=laravel/DB_DATABASE=laravel_test/g' .env
-          sed -i 's/DB_USERNAME=root/DB_USERNAME=root/g' .env
-          sed -i 's/DB_PASSWORD=/DB_PASSWORD=password/g' .env
-
 
       - name: Database Setup
         run: php artisan migrate:fresh --seed
