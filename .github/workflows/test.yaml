@@ -35,7 +35,7 @@ jobs:
           coverage: pcov
 
       - name: Copy .env file
-        run: cp .env.example .env.testing
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
 
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist --ansi
@@ -45,6 +45,15 @@ jobs:
 
       - name: Storage Permission
         run: chmod -R 777 storage bootstrap/cache
+
+      - name: Update Database Configuration
+        run: |
+          sed -i 's/APP_ENV=local/APP_ENV=testing/g' .env
+          sed -i 's/DB_HOST=127.0.0.1/DB_HOST=127.0.0.1/g' .env
+          sed -i 's/DB_DATABASE=laravel/DB_DATABASE=laravel_test/g' .env
+          sed -i 's/DB_USERNAME=root/DB_USERNAME=root/g' .env
+          sed -i 's/DB_PASSWORD=/DB_PASSWORD=password/g' .env
+
 
       - name: Database Setup
         run: php artisan migrate:fresh --seed
