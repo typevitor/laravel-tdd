@@ -35,7 +35,7 @@ jobs:
           coverage: pcov
 
       - name: Copy .env file
-        run: cp .env.testing .env
+        run: cp .env.example .env.testing
 
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist --ansi
