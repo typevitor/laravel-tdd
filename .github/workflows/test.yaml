@@ -44,6 +44,18 @@ jobs:
           tools: composer:v2
           coverage: pcov
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install Node dependencies
+        run: npm ci
+
+      - name: Build assets
+        run: npm run build
+
       - name: Copy .env file
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
 
