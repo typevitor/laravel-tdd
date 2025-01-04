@@ -34,7 +34,7 @@ class ProductsTest extends TestCase
         $response = $this->actingAs($this->user)->get('/products');
         $response->assertStatus(200);
         $response->assertDontSee(__('No products found'));
-        $response->assertViewHas('products', function($collection) use ($product) {
+        $response->assertViewHas('products', function ($collection) use ($product) {
             return $collection->contains($product);
         });
     }
@@ -46,7 +46,7 @@ class ProductsTest extends TestCase
         $response = $this->actingAs($this->user)->get('/products');
         $response->assertStatus(200);
         $response->assertDontSee(__('No products found'));
-        $response->assertViewHas('products', function($collection) use ($lastProduct) {
+        $response->assertViewHas('products', function ($collection) use ($lastProduct) {
             return !$collection->contains($lastProduct);
         });
     }
@@ -94,7 +94,7 @@ class ProductsTest extends TestCase
     {
         $product = [
             'name' => 'test',
-            'price' => 1234
+            'price' => 1234,
         ];
         $response = $this->actingAs($this->admin)->post('/products', $product);
         $response->assertStatus(302);
@@ -109,19 +109,19 @@ class ProductsTest extends TestCase
     public function test_edit_product_form_contain_correct_values()
     {
         $product = Product::factory()->create();
-        $response = $this->actingAs($this->admin)->get('/products/'.$product->id.'/edit');
+        $response = $this->actingAs($this->admin)->get('/products/' . $product->id . '/edit');
         $response->assertStatus(200);
-        $response->assertSee('value="'.$product->name.'"', escape: false);
-        $response->assertSee('value="'.$product->price.'.00"', escape: false);
+        $response->assertSee('value="' . $product->name . '"', escape: false);
+        $response->assertSee('value="' . $product->price . '.00"', escape: false);
         $response->assertViewHas('product', $product);
     }
 
     public function test_product_update_validation_error_redirects_back_to_form()
     {
         $product = Product::factory()->create();
-        $response = $this->actingAs($this->admin)->put('/products/'.$product->id, [
+        $response = $this->actingAs($this->admin)->put('/products/' . $product->id, [
             'name' => '',
-            'price' => 123
+            'price' => 123,
         ]);
         $response->assertStatus(302);
         $response->assertSessionHasErrors(['name']);
@@ -131,7 +131,7 @@ class ProductsTest extends TestCase
     public function test_product_delete_product_successful()
     {
         $product = Product::factory()->create();
-        $response = $this->actingAs($this->admin)->delete('/products/'.$product->id);
+        $response = $this->actingAs($this->admin)->delete('/products/' . $product->id);
         $response->assertStatus(302);
         $response->assertRedirect('/products');
         $this->assertDatabaseMissing('products', $product->toArray());

@@ -30,7 +30,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/products', [ProductsController::class, 'index'])->name('products.index');
 
-    Route::middleware('is_admin')->group(function() {
+    Route::middleware('is_admin')->group(function () {
         Route::get('/products/create', [ProductsController::class, 'create'])->name('products.create');
         Route::post('/products', [ProductsController::class, 'store'])->name('products.store');
         Route::get('/products/{product}/edit', [ProductsController::class, 'edit'])->name('products.edit');
@@ -40,4 +40,4 @@ Route::middleware('auth')->group(function () {
 });
 
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
