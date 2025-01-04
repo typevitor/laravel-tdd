@@ -24,7 +24,7 @@ test('products list is not empyy', function () {
 test('create product successful', function () {
     $product = [
         'name' => 'test',
-        'price' => '1234.00'
+        'price' => '1234.00',
     ];
     $this->actingAs($this->admin)->post('/products', $product)
         ->assertStatus(302)

@@ -6,8 +6,8 @@ class CurrencyService
 {
     public const RATES = [
         'usd' => [
-            'eur' => 0.98
-        ]
+            'eur' => 0.98,
+        ],
     ];
 
     public function convert(float $amount, string $currencyFrom, string $currencyTo): float
