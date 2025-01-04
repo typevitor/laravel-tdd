@@ -1,0 +1,75 @@
+# .github/workflows/deploy.yml
+name: Deploy
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.2'
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+
+    - name: Install dependencies
+      run: |
+        composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
+        npm ci
+
+    - name: Compile assets
+      run: |
+        npm run build
+        npm prune --production
+
+    - name: Configure SSH
+      run: |
+        mkdir -p ~/.ssh/
+        echo "${{ secrets.DO_SSH_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H ${{ secrets.DO_HOST }} >> ~/.ssh/known_hosts
+
+    - name: Deploy to Digital Ocean
+      run: |
+        timestamp=$(date +%Y%m%d_%H%M%S)
+        release_path="/var/www/releases/${timestamp}"
+
+        ssh ${{ secrets.DO_USER }}@${{ secrets.DO_HOST }} "mkdir -p ${release_path}"
+
+        rsync -avz --exclude='.git' \
+          --exclude='.github' \
+          --exclude='node_modules' \
+          --exclude='tests' \
+          --exclude='.env' \
+          --exclude='storage/framework/cache/*' \
+          --exclude='storage/framework/sessions/*' \
+          --exclude='storage/framework/views/*' \
+          --exclude='storage/logs/*' \
+          ./ ${{ secrets.DO_USER }}@${{ secrets.DO_HOST }}:${release_path}
+
+        ssh ${{ secrets.DO_USER }}@${{ secrets.DO_HOST }} "
+          cd ${release_path} && \
+          cp /var/www/.env .env && \
+          php artisan storage:link && \
+          php artisan config:cache && \
+          php artisan route:cache && \
+          php artisan view:cache && \
+          chown -R www-data:www-data . && \
+          cd /var/www && \
+          ln -nfs ${release_path} current && \
+          sudo systemctl reload php8.2-fpm && \
+          sudo systemctl reload nginx"
+
+        ssh ${{ secrets.DO_USER }}@${{ secrets.DO_HOST }} "
+          cd /var/www/releases && ls -t | tail -n +6 | xargs -r rm -rf"
