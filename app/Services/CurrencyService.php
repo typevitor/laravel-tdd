@@ -4,7 +4,7 @@ namespace App\Services;
 
 class CurrencyService
 {
-    const RATES = [
+    public const RATES = [
         'usd' => [
             'eur' => 0.98
         ]
