@@ -97,3 +97,6 @@ jobs:
 
       - name: Run php-cs-fixer
         run: ./vendor/bin/php-cs-fixer fix . --dry-run --diff
+
+      - name: Run Linter
+        run: npm run lint
