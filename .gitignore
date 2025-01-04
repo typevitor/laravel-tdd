@@ -19,3 +19,4 @@ yarn-error.log
 /.vscode
 laravel_tdd
 .phpunit.cache
+.php-cs-fixer.cache
