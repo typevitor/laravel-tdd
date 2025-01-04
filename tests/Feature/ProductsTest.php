@@ -34,7 +34,7 @@ class ProductsTest extends TestCase
         $response = $this->actingAs($this->user)->get('/products');
         $response->assertStatus(200);
         $response->assertDontSee(__('No products found'));
-        $response->assertViewHas('products', function($collection) use ($product) {
+        $response->assertViewHas('products', function ($collection) use ($product) {
             return $collection->contains($product);
         });
     }
@@ -46,7 +46,7 @@ class ProductsTest extends TestCase
         $response = $this->actingAs($this->user)->get('/products');
         $response->assertStatus(200);
         $response->assertDontSee(__('No products found'));
-        $response->assertViewHas('products', function($collection) use ($lastProduct) {
+        $response->assertViewHas('products', function ($collection) use ($lastProduct) {
             return !$collection->contains($lastProduct);
         });
     }

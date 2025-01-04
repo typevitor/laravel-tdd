@@ -1,6 +1,6 @@
 <?php
 
-beforeEach(function() {
+beforeEach(function () {
     $this->user = createUser(isAdmin: false);
     $this->admin = createUser(isAdmin: true);
 });
@@ -16,12 +16,12 @@ test('products list is not empyy', function () {
     $this->actingAs($this->user)->get('/products')
         ->assertStatus(200)
         ->assertDontSee(__('No products found'))
-        ->assertViewHas('products', function($collection) use ($product) {
+        ->assertViewHas('products', function ($collection) use ($product) {
             return $collection->contains($product);
         });
 });
 
-test('create product successful', function() {
+test('create product successful', function () {
     $product = [
         'name' => 'test',
         'price' => '1234.00'
