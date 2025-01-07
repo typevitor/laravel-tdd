@@ -7,7 +7,7 @@ use Carbon\Carbon;
 
 class DateRange
 {
-    public function __construct(private Carbon $startDate, private Carbon $endDate)
+    public function __construct(private readonly Carbon $startDate, private readonly  Carbon $endDate)
     {
         if ($endDate->lte($startDate)) {
             throw new DateRangeException();
