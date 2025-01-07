@@ -7,10 +7,20 @@ use Carbon\Carbon;
 
 class DateRange
 {
-    public function __construct(Carbon $startDate, Carbon $endDate)
+    public function __construct(private Carbon $startDate, private Carbon $endDate)
     {
         if ($endDate->lte($startDate)) {
             throw new DateRangeException();
         }
-   }
+    }
+
+    public function getStartDate(): Carbon
+    {
+       return $this->startDate;
+    }
+
+    public function getEndDate(): Carbon
+    {
+        return $this->endDate;
+    }
 }
