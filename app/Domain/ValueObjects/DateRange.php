@@ -16,11 +16,16 @@ class DateRange
 
     public function getStartDate(): Carbon
     {
-       return $this->startDate;
+        return $this->startDate;
     }
 
     public function getEndDate(): Carbon
     {
         return $this->endDate;
+    }
+
+    public function getReservationNights(): int
+    {
+        return $this->startDate->diffInDays($this->endDate);
     }
 }

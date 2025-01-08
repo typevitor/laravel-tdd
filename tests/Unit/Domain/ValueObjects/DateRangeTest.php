@@ -21,3 +21,21 @@ it('should return an exception if end date is before start date', function () {
         new DateRange(Carbon::parse('2021-01-01'), Carbon::parse('2021-01-01'));
     })->toThrow(DateRangeException::class, 'End date must be after start date');
 });
+
+
+it('should calculate the amount of nights for the reservation', function () {
+    $reservation1 = new DateRange(
+        Carbon::parse('2025-01-01'), Carbon::parse('2025-01-05')
+    );
+    expect($reservation1->getReservationNights())->toBe(4);
+
+    $reservation2 = new DateRange(
+        Carbon::parse('2025-01-10'), Carbon::parse('2025-01-13')
+    );
+    expect($reservation2->getReservationNights())->toBe(3);
+
+    $reservation3 = new DateRange(
+        Carbon::parse('2025-01-31'), Carbon::parse('2025-02-12')
+    );
+    expect($reservation3->getReservationNights())->toBe(12);
+});
