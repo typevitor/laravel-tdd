@@ -39,3 +39,24 @@ it('should calculate the amount of nights for the reservation', function () {
     );
     expect($reservation3->getReservationNights())->toBe(12);
 });
+
+it('should not allow reservation with a overlap date range', function () {
+    $reservation1 = new DateRange(
+        Carbon::parse('2025-01-01'), Carbon::parse('2025-01-05')
+    );
+    expect($reservation1->getReservationNights())->toBe(4);
+
+    $reservation2 = new DateRange(
+        Carbon::parse('2025-01-02'), Carbon::parse('2025-01-13')
+    );
+    $reservation3 = new DateRange(
+        Carbon::parse('2025-01-12'), Carbon::parse('2025-01-22')
+    );
+    $reservation4 = new DateRange(
+        Carbon::parse('2025-01-22'), Carbon::parse('2025-01-24')
+    );
+    expect($reservation1->overlaps($reservation2))->toBeTrue();
+    expect($reservation2->overlaps($reservation3))->toBeTrue();
+    expect($reservation1->overlaps($reservation3))->toBeFalse();
+    expect($reservation3->overlaps($reservation4))->toBeTrue();
+});

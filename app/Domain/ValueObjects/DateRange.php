@@ -28,4 +28,12 @@ class DateRange
     {
         return $this->startDate->diffInDays($this->endDate);
     }
+
+    public function overlaps(DateRange $dateRange): bool
+    {
+        return $this->getStartDate() <= $dateRange->getEndDate()
+            && $this->getEndDate() >= $dateRange->getStartDate();
+        // return $this->getStartDate()->between($dateRange->getStartDate(), $dateRange->getEndDate())
+        //     || $this->getEndDate()->between($dateRange->getStartDate(), $dateRange->getEndDate());
+    }
 }
