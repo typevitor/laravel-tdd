@@ -60,3 +60,9 @@ it('should not allow reservation with a overlap date range', function () {
     expect($reservation1->overlaps($reservation3))->toBeFalse();
     expect($reservation3->overlaps($reservation4))->toBeTrue();
 });
+
+it('should not allow start date and end date to be equal', function () {
+    expect(function () {
+        new DateRange(Carbon::parse('2021-01-01'), Carbon::parse('2020-01-01'));
+    })->toThrow(DateRangeException::class, 'End date must be after start date');
+});
