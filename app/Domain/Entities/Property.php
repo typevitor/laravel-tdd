@@ -10,6 +10,9 @@ use App\Exceptions\Property\PropertyNameEmptyException;
 
 class Property
 {
+    const BASE_DISCOUNT = 0.9;
+    const BASE_QTDE_NIGHTS_FOR_DISCOUNT = 7;
+
     public function __construct(
         private readonly string $id,
         private readonly string $name,
@@ -65,6 +68,10 @@ class Property
 
     public function calculateTotalPrice(DateRange $dateRange): int
     {
-        return $dateRange->getReservationNights() * $this->pricePerNight;
+        $basePrice = $dateRange->getReservationNights() * $this->pricePerNight;
+        if ($dateRange->getReservationNights() >= self::BASE_QTDE_NIGHTS_FOR_DISCOUNT) {
+            return $basePrice * self::BASE_DISCOUNT;
+        }
+        return $basePrice;
     }
 }

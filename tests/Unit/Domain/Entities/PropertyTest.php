@@ -57,7 +57,8 @@ it('should not give discount if amount of nights booked is lower than 7', functi
 
 it('should give 10% discount if amount of nights is 7 or higher', function () {
     $property = new Property('1', 'Name', 'Descripton', 5, 10.0);
-    $dateRange = new DateRange(Carbon::parse('2025-01-01'), Carbon::parse('2025-01-05'));
+    $dateRange = new DateRange(Carbon::parse('2025-01-01'), Carbon::parse('2025-01-08'));
     $totalPrice = $property->calculateTotalPrice($dateRange);
-    expect($totalPrice)->toBe($property->getPricePerNight() * $dateRange->getReservationNights());
+    $priceWithDiscount = $property->getPricePerNight() * $dateRange->getReservationNights() * Property::BASE_DISCOUNT;
+    expect($totalPrice)->toBe(intval($priceWithDiscount));
 });
