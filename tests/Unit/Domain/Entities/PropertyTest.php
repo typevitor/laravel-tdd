@@ -4,6 +4,7 @@ namespace Tests\Unit\Domain\Entities;
 
 use App\Domain\Entities\Property;
 use App\Exceptions\Property\PropertyInvalidOccupantsNumberException;
+use App\Exceptions\Property\PropertyInvalidPricePerNightException;
 use App\Exceptions\Property\PropertyNameEmptyException;
 
 it('should create an instance with id and name', function () {
@@ -27,4 +28,12 @@ it('should throw an error if occupants number is 0 or lower', function () {
 
     expect(fn () => new Property('1', 'Name', 'Descripton', -1, 10.0))
         ->toThrow(PropertyInvalidOccupantsNumberException::class, 'Property occupants quantity cannot be 0 or lower');
+});
+
+it('should throw an error if price per night is 0 or lower', function () {
+    expect(fn () => new Property('1', 'Name', 'Descripton', 5, 0))
+        ->toThrow(PropertyInvalidPricePerNightException::class, 'Property price per night cannot be 0 or lower');
+
+    expect(fn () => new Property('1', 'Name', 'Descripton', 2, -10))
+        ->toThrow(PropertyInvalidPricePerNightException::class, 'Property price per night cannot be 0 or lower');
 });

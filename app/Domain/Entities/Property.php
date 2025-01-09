@@ -3,6 +3,7 @@
 namespace App\Domain\Entities;
 
 use App\Exceptions\Property\PropertyInvalidOccupantsNumberException;
+use App\Exceptions\Property\PropertyInvalidPricePerNightException;
 use App\Exceptions\Property\PropertyNameEmptyException;
 
 class Property
@@ -21,6 +22,10 @@ class Property
 
         if ($maxOccupants <= 0) {
             throw new PropertyInvalidOccupantsNumberException();
+        }
+
+        if ($pricePerNight <= 0) {
+            throw new PropertyInvalidPricePerNightException();
         }
     }
 
