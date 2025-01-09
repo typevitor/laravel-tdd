@@ -3,6 +3,7 @@
 namespace Tests\Unit\Domain\Entities;
 
 use App\Domain\Entities\Property;
+use App\Exceptions\Property\PropertyInvalidOccupantsNumberException;
 use App\Exceptions\Property\PropertyNameEmptyException;
 
 it('should create an instance with id and name', function () {
@@ -17,4 +18,13 @@ it('should create an instance with id and name', function () {
 it('should throw an error if name is empty', function () {
     expect(fn () => new Property('1', '', 'Descripton', 5, 10.0))
         ->toThrow(PropertyNameEmptyException::class, 'Property name cannot be empty');
+});
+
+
+it('should throw an error if occupants number is 0 or lower', function () {
+    expect(fn () => new Property('1', 'Name', 'Descripton', 0, 10.0))
+        ->toThrow(PropertyInvalidOccupantsNumberException::class, 'Property occupants quantity cannot be 0 or lower');
+
+    expect(fn () => new Property('1', 'Name', 'Descripton', -1, 10.0))
+        ->toThrow(PropertyInvalidOccupantsNumberException::class, 'Property occupants quantity cannot be 0 or lower');
 });

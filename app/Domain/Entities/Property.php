@@ -2,6 +2,7 @@
 
 namespace App\Domain\Entities;
 
+use App\Exceptions\Property\PropertyInvalidOccupantsNumberException;
 use App\Exceptions\Property\PropertyNameEmptyException;
 
 class Property
@@ -18,6 +19,9 @@ class Property
             throw new PropertyNameEmptyException();
         }
 
+        if ($maxOccupants <= 0) {
+            throw new PropertyInvalidOccupantsNumberException();
+        }
     }
 
     public function getId(): string
