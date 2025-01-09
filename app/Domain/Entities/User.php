@@ -2,8 +2,8 @@
 
 namespace App\Domain\Entities;
 
-use App\Exceptions\UserEmptyIdException;
-use App\Exceptions\UserEmptyNameException;
+use App\Exceptions\User\UserEmptyIdException;
+use App\Exceptions\User\UserEmptyNameException;
 
 class User
 {

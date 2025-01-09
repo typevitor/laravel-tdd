@@ -3,8 +3,8 @@
 namespace Tests\Unit\Domain\Entities;
 
 use App\Domain\Entities\User;
-use App\Exceptions\UserEmptyIdException;
-use App\Exceptions\UserEmptyNameException;
+use App\Exceptions\User\UserEmptyIdException;
+use App\Exceptions\User\UserEmptyNameException;
 
 it('should create an instance with id and name', function () {
     $user = new User('1', 'Name');
