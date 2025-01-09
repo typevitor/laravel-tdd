@@ -4,6 +4,7 @@ namespace App\Domain\Entities;
 
 use App\Exceptions\Property\PropertyInvalidOccupantsNumberException;
 use App\Exceptions\Property\PropertyInvalidPricePerNightException;
+use App\Exceptions\Property\PropertyMaxOccupantsException;
 use App\Exceptions\Property\PropertyNameEmptyException;
 
 class Property
@@ -52,5 +53,12 @@ class Property
     public function getPricePerNight(): int
     {
         return $this->pricePerNight;
+    }
+
+    public function validateOccupantsQuantity(int $occupants): void
+    {
+        if ($occupants > $this->maxOccupants) {
+            throw new PropertyMaxOccupantsException($this->maxOccupants);
+        }
     }
 }
