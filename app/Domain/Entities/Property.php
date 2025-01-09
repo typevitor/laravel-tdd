@@ -10,8 +10,9 @@ use App\Exceptions\Property\PropertyNameEmptyException;
 
 class Property
 {
-    const BASE_DISCOUNT = 0.9;
-    const BASE_QTDE_NIGHTS_FOR_DISCOUNT = 7;
+    public const BASE_DISCOUNT = 0.9;
+
+    public const BASE_QTDE_NIGHTS_FOR_DISCOUNT = 7;
 
     public function __construct(
         private readonly string $id,
@@ -19,9 +20,8 @@ class Property
         private readonly string $description,
         private readonly int $maxOccupants,
         private readonly int $pricePerNight,
-    )
-    {
-        if ($name === "") {
+    ) {
+        if ($name === '') {
             throw new PropertyNameEmptyException();
         }
 
@@ -72,6 +72,7 @@ class Property
         if ($dateRange->getReservationNights() >= self::BASE_QTDE_NIGHTS_FOR_DISCOUNT) {
             return (int) round($basePrice * self::BASE_DISCOUNT, 0);
         }
+
         return (int) round($basePrice, 0);
     }
 }

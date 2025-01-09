@@ -7,7 +7,7 @@ use Carbon\Carbon;
 
 class DateRange
 {
-    public function __construct(private readonly Carbon $startDate, private readonly  Carbon $endDate)
+    public function __construct(private readonly Carbon $startDate, private readonly Carbon $endDate)
     {
         if ($endDate->lte($startDate)) {
             throw new DateRangeException();
@@ -26,7 +26,7 @@ class DateRange
 
     public function getReservationNights(): int
     {
-        return $this->startDate->diffInDays($this->endDate);
+        return (int) $this->startDate->diffInDays($this->endDate);
     }
 
     public function overlaps(DateRange $dateRange): bool

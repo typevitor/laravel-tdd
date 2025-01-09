@@ -13,9 +13,9 @@ it('should create an instance with id and name', function () {
 });
 
 it('should throw an error if name is empty', function () {
-    expect(fn () => new User('1', ''))->toThrow(UserEmptyNameException::class, 'User name cannot be empty');
+    expect(fn() => new User('1', ''))->toThrow(UserEmptyNameException::class, 'User name cannot be empty');
 });
 
 it('should throw an error if id is empty', function () {
-    expect(fn () => new User('', 'Name'))->toThrow(UserEmptyIdException::class, 'User Id cannot be empty');
+    expect(fn() => new User('', 'Name'))->toThrow(UserEmptyIdException::class, 'User Id cannot be empty');
 });

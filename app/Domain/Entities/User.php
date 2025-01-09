@@ -9,11 +9,11 @@ class User
 {
     public function __construct(private readonly string $id, private readonly string $name)
     {
-        if ($id === "") {
+        if ($id === '') {
             throw new UserEmptyIdException();
         }
 
-        if ($name === "") {
+        if ($name === '') {
             throw new UserEmptyNameException();
         }
     }

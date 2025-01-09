@@ -20,32 +20,31 @@ it('should create an instance with id and name', function () {
 });
 
 it('should throw an error if name is empty', function () {
-    expect(fn () => new Property('1', '', 'Descripton', 5, 10.0))
+    expect(fn() => new Property('1', '', 'Descripton', 5, 10.0))
         ->toThrow(PropertyNameEmptyException::class, 'Property name cannot be empty');
 });
 
-
 it('should throw an error if occupants number is 0 or lower', function () {
-    expect(fn () => new Property('1', 'Name', 'Descripton', 0, 10.0))
+    expect(fn() => new Property('1', 'Name', 'Descripton', 0, 10.0))
         ->toThrow(PropertyInvalidOccupantsNumberException::class, 'Property occupants quantity cannot be 0 or lower');
 
-    expect(fn () => new Property('1', 'Name', 'Descripton', -1, 10.0))
+    expect(fn() => new Property('1', 'Name', 'Descripton', -1, 10.0))
         ->toThrow(PropertyInvalidOccupantsNumberException::class, 'Property occupants quantity cannot be 0 or lower');
 });
 
 it('should throw an error if price per night is 0 or lower', function () {
-    expect(fn () => new Property('1', 'Name', 'Descripton', 5, 0))
+    expect(fn() => new Property('1', 'Name', 'Descripton', 5, 0))
         ->toThrow(PropertyInvalidPricePerNightException::class, 'Property price per night cannot be 0 or lower');
 
-    expect(fn () => new Property('1', 'Name', 'Descripton', 2, -10))
+    expect(fn() => new Property('1', 'Name', 'Descripton', 2, -10))
         ->toThrow(PropertyInvalidPricePerNightException::class, 'Property price per night cannot be 0 or lower');
 });
 
 it('should throw an error if max occupants validation is exceed', function () {
     $property = new Property('1', 'Name', 'Descripton', 5, 100);
     $occupants = 6;
-    expect(fn () => $property->validateOccupantsQuantity($occupants))
-        ->toThrow(PropertyMaxOccupantsException::class, 'Property occupants exceed. Max allowed is: '. $property->getMaxOccupants());
+    expect(fn() => $property->validateOccupantsQuantity($occupants))
+        ->toThrow(PropertyMaxOccupantsException::class, 'Property occupants exceed. Max allowed is: ' . $property->getMaxOccupants());
 });
 
 it('should not give discount if amount of nights booked is lower than 7', function () {
