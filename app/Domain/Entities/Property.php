@@ -70,8 +70,8 @@ class Property
     {
         $basePrice = $dateRange->getReservationNights() * $this->pricePerNight;
         if ($dateRange->getReservationNights() >= self::BASE_QTDE_NIGHTS_FOR_DISCOUNT) {
-            return $basePrice * self::BASE_DISCOUNT;
+            return (int) round($basePrice * self::BASE_DISCOUNT, 0);
         }
-        return $basePrice;
+        return (int) round($basePrice, 0);
     }
 }
