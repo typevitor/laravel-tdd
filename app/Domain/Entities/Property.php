@@ -2,6 +2,8 @@
 
 namespace App\Domain\Entities;
 
+use App\Exceptions\Property\PropertyNameEmptyException;
+
 class Property
 {
     public function __construct(
@@ -12,6 +14,9 @@ class Property
         private readonly int $pricePerNight,
     )
     {
+        if ($name === "") {
+            throw new PropertyNameEmptyException();
+        }
 
     }
 
