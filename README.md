@@ -13,7 +13,7 @@ O preço total da reserva é calculado com base no preço por noite da proprieda
 2. Cancelar reservas com políticas de reembolso
 **Políticas:**
  a. 7 dias ou mais antes do check-in: Reembolso total do valor pago.
- b. 1 a 7 dias antes do check-in: Reembolso de 50% do valor pago.
+ b. 1 a 6 dias antes do check-in: Reembolso de 50% do valor pago.
  c. Menos de 1 dia: Reembolso não permitido.
 Cancelamentos atualizam o status da reserva para **CANCELLED** e liberam a propriedade para novas reservas.
 O sistema impede o cancelamento de reservas que já foram canceladas.
