@@ -2,6 +2,7 @@
 
 namespace App\Domain\Entities;
 
+use App\Domain\ValueObjects\DateRange;
 use App\Exceptions\Property\PropertyInvalidOccupantsNumberException;
 use App\Exceptions\Property\PropertyInvalidPricePerNightException;
 use App\Exceptions\Property\PropertyMaxOccupantsException;
@@ -60,5 +61,10 @@ class Property
         if ($occupants > $this->maxOccupants) {
             throw new PropertyMaxOccupantsException($this->maxOccupants);
         }
+    }
+
+    public function calculateTotalPrice(DateRange $dateRange): int
+    {
+        return $dateRange->getReservationNights() * $this->pricePerNight;
     }
 }

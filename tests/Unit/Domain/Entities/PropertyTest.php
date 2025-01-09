@@ -3,10 +3,12 @@
 namespace Tests\Unit\Domain\Entities;
 
 use App\Domain\Entities\Property;
+use App\Domain\ValueObjects\DateRange;
 use App\Exceptions\Property\PropertyInvalidOccupantsNumberException;
 use App\Exceptions\Property\PropertyInvalidPricePerNightException;
 use App\Exceptions\Property\PropertyMaxOccupantsException;
 use App\Exceptions\Property\PropertyNameEmptyException;
+use Carbon\Carbon;
 
 it('should create an instance with id and name', function () {
     $property = new Property('1', 'Name', 'Descripton', 5, 10.0);
@@ -44,4 +46,18 @@ it('should throw an error if max occupants validation is exceed', function () {
     $occupants = 6;
     expect(fn () => $property->validateOccupantsQuantity($occupants))
         ->toThrow(PropertyMaxOccupantsException::class, 'Property occupants exceed. Max allowed is: '. $property->getMaxOccupants());
+});
+
+it('should not give discount if amount of nights booked is lower than 7', function () {
+    $property = new Property('1', 'Name', 'Descripton', 5, 10.0);
+    $dateRange = new DateRange(Carbon::parse('2025-01-01'), Carbon::parse('2025-01-05'));
+    $totalPrice = $property->calculateTotalPrice($dateRange);
+    expect($totalPrice)->toBe($property->getPricePerNight() * $dateRange->getReservationNights());
+});
+
+it('should give 10% discount if amount of nights is 7 or higher', function () {
+    $property = new Property('1', 'Name', 'Descripton', 5, 10.0);
+    $dateRange = new DateRange(Carbon::parse('2025-01-01'), Carbon::parse('2025-01-05'));
+    $totalPrice = $property->calculateTotalPrice($dateRange);
+    expect($totalPrice)->toBe($property->getPricePerNight() * $dateRange->getReservationNights());
 });
