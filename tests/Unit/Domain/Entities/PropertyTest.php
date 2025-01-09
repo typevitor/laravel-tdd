@@ -42,23 +42,31 @@ it('should throw an error if price per night is 0 or lower', function () {
 });
 
 it('should throw an error if max occupants validation is exceed', function () {
-    $property = new Property('1', 'Name', 'Descripton', 5, 10.0);
+    $property = new Property('1', 'Name', 'Descripton', 5, 100);
     $occupants = 6;
     expect(fn () => $property->validateOccupantsQuantity($occupants))
         ->toThrow(PropertyMaxOccupantsException::class, 'Property occupants exceed. Max allowed is: '. $property->getMaxOccupants());
 });
 
 it('should not give discount if amount of nights booked is lower than 7', function () {
-    $property = new Property('1', 'Name', 'Descripton', 5, 10.0);
+    $property = new Property('1', 'Name', 'Descripton', 5, 100);
     $dateRange = new DateRange(Carbon::parse('2025-01-01'), Carbon::parse('2025-01-05'));
     $totalPrice = $property->calculateTotalPrice($dateRange);
-    expect($totalPrice)->toBe($property->getPricePerNight() * $dateRange->getReservationNights());
+    expect($totalPrice)->toBe(400);
+
+    $dateRange = new DateRange(Carbon::parse('2025-01-01'), Carbon::parse('2025-01-03'));
+    $totalPrice = $property->calculateTotalPrice($dateRange);
+    expect($totalPrice)->toBe(200);
 });
 
 it('should give 10% discount if amount of nights is 7 or higher', function () {
-    $property = new Property('1', 'Name', 'Descripton', 5, 10.0);
+    $property = new Property('1', 'Name', 'Descripton', 5, 100);
     $dateRange = new DateRange(Carbon::parse('2025-01-01'), Carbon::parse('2025-01-08'));
     $totalPrice = $property->calculateTotalPrice($dateRange);
-    $priceWithDiscount = $property->getPricePerNight() * $dateRange->getReservationNights() * Property::BASE_DISCOUNT;
-    expect($totalPrice)->toBe(intval($priceWithDiscount));
+    expect($totalPrice)->toBe(630);
+
+    $property = new Property('1', 'Name', 'Descripton', 5, 300);
+    $dateRange = new DateRange(Carbon::parse('2025-01-01'), Carbon::parse('2025-01-18'));
+    $totalPrice = $property->calculateTotalPrice($dateRange);
+    expect($totalPrice)->toBe(4590);
 });
