@@ -1,12 +1,5 @@
 <?php
 
-// Directories to not scan
-$excludeDirs = [
-    'vendor/',
-    'node_modules/',
-];
-
-
 $finder = (new PhpCsFixer\Finder())
     ->in([
         __DIR__.'/app',
