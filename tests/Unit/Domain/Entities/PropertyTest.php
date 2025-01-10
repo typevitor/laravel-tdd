@@ -99,9 +99,7 @@ it('should validate if property is avaliable', function () {
     $property = new Property('1', 'Name', 'Descripton', 5, 10000);
     $dateRange = new DateRange(Carbon::parse('2025-01-10'), Carbon::parse('2025-01-18'));
     $user = new User('1', 'UserName');
-    $booking = new Booking('1', $property, $user, $dateRange, 5);
-    $property->addBooking($booking);
-
+    new Booking('1', $property, $user, $dateRange, 5);
     $dateRange2 = new DateRange(Carbon::parse('2025-01-15'), Carbon::parse('2025-01-20'));
     $dateRange3 = new DateRange(Carbon::parse('2025-01-20'), Carbon::parse('2025-01-24'));
     expect($property->isAvaliable($dateRange))->toBe(false);
