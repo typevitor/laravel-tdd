@@ -21,9 +21,7 @@ class Booking
         if ($occupants <= 0) {
             throw new BookMinimumOccupantsException();
         }
-        if ($occupants > $property->getMaxOccupants()) {
-            throw new BookMaximumOccupantsException($property->getMaxOccupants());
-        }
+        $property->validateOccupantsQuantity($occupants);
         $property->addBooking($this);
     }
 

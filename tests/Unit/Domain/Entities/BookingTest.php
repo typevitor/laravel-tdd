@@ -6,8 +6,8 @@ use App\Domain\Entities\Booking;
 use App\Domain\Entities\Property;
 use App\Domain\Entities\User;
 use App\Domain\ValueObjects\DateRange;
-use App\Exceptions\Booking\BookMaximumOccupantsException;
 use App\Exceptions\Booking\BookMinimumOccupantsException;
+use App\Exceptions\Property\PropertyMaxOccupantsException;
 use Carbon\Carbon;
 
 it('should create an instance of Book given property, user and DateRange and occupants, status', function () {
@@ -38,6 +38,6 @@ it('should throw an exception if number of occupants is higher than property max
     $dateRange = new DateRange(Carbon::parse('2025-01-10'), Carbon::parse('2025-01-18'));
     $user = new User('1', 'UserName');
     expect(fn () => new Booking('1', $property, $user, $dateRange, 10))
-        ->toThrow(BookMaximumOccupantsException::class, 'Number of occupants should be lower than: '. $property->getMaxOccupants());
+        ->toThrow(PropertyMaxOccupantsException::class);
 });
 
