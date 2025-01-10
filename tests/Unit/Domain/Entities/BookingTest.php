@@ -6,6 +6,7 @@ use App\Domain\Entities\Booking;
 use App\Domain\Entities\Property;
 use App\Domain\Entities\User;
 use App\Domain\ValueObjects\DateRange;
+use App\Exceptions\Booking\BookMaximumOccupantsException;
 use App\Exceptions\Booking\BookMinimumOccupantsException;
 use Carbon\Carbon;
 
@@ -31,3 +32,12 @@ it('should throw an exception if number of occupants is zero or lower', function
     expect(fn () => new Booking('1', $property, $user, $dateRange, 0))
         ->toThrow(BookMinimumOccupantsException::class, 'Number of occupants should be higher than zero.');
 });
+
+it('should throw an exception if number of occupants is higher than property max occupants', function () {
+    $property = new Property('1', 'Name', 'Descripton', 5, 10000);
+    $dateRange = new DateRange(Carbon::parse('2025-01-10'), Carbon::parse('2025-01-18'));
+    $user = new User('1', 'UserName');
+    expect(fn () => new Booking('1', $property, $user, $dateRange, 10))
+        ->toThrow(BookMaximumOccupantsException::class, 'Number of occupants should be lower than: '. $property->getMaxOccupants());
+});
+

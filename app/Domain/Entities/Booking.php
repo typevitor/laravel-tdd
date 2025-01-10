@@ -4,6 +4,7 @@ namespace App\Domain\Entities;
 
 use App\Domain\ValueObjects\DateRange;
 use App\Enum\BookStatus;
+use App\Exceptions\Booking\BookMaximumOccupantsException;
 use App\Exceptions\Booking\BookMinimumOccupantsException;
 
 class Booking
@@ -19,6 +20,9 @@ class Booking
     ) {
         if ($occupants <= 0) {
             throw new BookMinimumOccupantsException();
+        }
+        if ($occupants > $property->getMaxOccupants()) {
+            throw new BookMaximumOccupantsException($property->getMaxOccupants());
         }
         $property->addBooking($this);
     }
