@@ -3,9 +3,12 @@
 namespace App\Domain\Entities;
 
 use App\Domain\ValueObjects\DateRange;
+use App\Enum\BookStatus;
 
 class Booking
 {
+    private BookStatus $status = BookStatus::CONFIRMED;
+
     public function __construct(
         private readonly string $id,
         private readonly Property $property,
@@ -38,5 +41,10 @@ class Booking
     public function getOccupants(): int
     {
         return $this->occupants;
+    }
+
+    public function getBookStatus(): BookStatus
+    {
+        return $this->status;
     }
 }
