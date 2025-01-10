@@ -87,8 +87,7 @@ it('should set a book to a property', function () {
     $property = new Property('1', 'Name', 'Descripton', 5, 10000);
     $dateRange = new DateRange(Carbon::parse('2025-01-10'), Carbon::parse('2025-01-18'));
     $user = new User('1', 'UserName');
-    $booking = new Booking('1', $property, $user, $dateRange, 5);
-    $property->addBooking($booking);
+    new Booking('1', $property, $user, $dateRange, 5);
     expect($property->getBookings()[0]->getId())->toBe('1');
     expect($property->getBookings()[0]->getProperty())->toEqual($property);
     expect($property->getBookings()[0]->getBookStatus())->toBe(BookStatus::CONFIRMED);
