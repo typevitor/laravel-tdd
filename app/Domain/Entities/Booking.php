@@ -4,6 +4,7 @@ namespace App\Domain\Entities;
 
 use App\Domain\ValueObjects\DateRange;
 use App\Enum\BookStatus;
+use App\Exceptions\Booking\BookMinimumOccupantsException;
 
 class Booking
 {
@@ -16,6 +17,10 @@ class Booking
         private readonly DateRange $dateRange,
         private readonly int $occupants,
     ) {
+        if ($occupants <= 0) {
+            throw new BookMinimumOccupantsException();
+        }
+        $property->addBooking($this);
     }
 
     public function getId(): string
