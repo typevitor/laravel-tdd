@@ -88,4 +88,17 @@ class Property
 
         return (int) round($basePrice, 0);
     }
+
+    public function isAvaliable(DateRange $dateRange): bool
+    {
+        foreach($this->bookings as $booking) {
+            if (
+                $booking->getBookStatus() === BookStatus::CONFIRMED &&
+                $booking->getDateRange()->overlaps($dateRange)
+            ) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

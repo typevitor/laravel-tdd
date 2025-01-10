@@ -2,8 +2,11 @@
 
 namespace Tests\Unit\Domain\Entities;
 
+use App\Domain\Entities\Booking;
 use App\Domain\Entities\Property;
+use App\Domain\Entities\User;
 use App\Domain\ValueObjects\DateRange;
+use App\Enum\BookStatus;
 use App\Exceptions\Property\PropertyInvalidOccupantsNumberException;
 use App\Exceptions\Property\PropertyInvalidPricePerNightException;
 use App\Exceptions\Property\PropertyMaxOccupantsException;
@@ -91,4 +94,18 @@ it('should set a book to a property', function () {
     expect($property->getBookings()[0]->getBookStatus())->toBe(BookStatus::CONFIRMED);
 });
 
+
+it('should validate if property is avaliable', function () {
+    $property = new Property('1', 'Name', 'Descripton', 5, 10000);
+    $dateRange = new DateRange(Carbon::parse('2025-01-10'), Carbon::parse('2025-01-18'));
+    $user = new User('1', 'UserName');
+    $booking = new Booking('1', $property, $user, $dateRange, 5);
+    $property->addBooking($booking);
+
+    $dateRange2 = new DateRange(Carbon::parse('2025-01-15'), Carbon::parse('2025-01-20'));
+    $dateRange3 = new DateRange(Carbon::parse('2025-01-20'), Carbon::parse('2025-01-24'));
+    expect($property->isAvaliable($dateRange))->toBe(false);
+    expect($property->isAvaliable($dateRange2))->toBe(false);
+    expect($property->isAvaliable($dateRange3))->toBe(true);
+});
 
