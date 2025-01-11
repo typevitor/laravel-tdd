@@ -12,6 +12,7 @@ use App\Exceptions\Property\PropertyInvalidPricePerNightException;
 use App\Exceptions\Property\PropertyMaxOccupantsException;
 use App\Exceptions\Property\PropertyNameEmptyException;
 use Carbon\Carbon;
+use Mockery;
 
 it('should create an instance with id and name', function () {
     $property = new Property('1', 'Name', 'Descripton', 5, 10.0);
@@ -83,14 +84,21 @@ it('should give 10% discount if amount of nights is 7 or higher', function () {
     expect($totalPrice)->toBe(118252);
 });
 
-it('should set a book to a property', function () {
+it('should mock Book to test add booking', function () {
     $property = new Property('1', 'Name', 'Descripton', 5, 10000);
     $dateRange = new DateRange(Carbon::parse('2025-01-10'), Carbon::parse('2025-01-18'));
-    $user = new User('1', 'UserName');
-    new Booking('1', $property, $user, $dateRange, 5);
+
+    $book = Mockery::mock(Booking::class);
+    $book->shouldReceive('getId')->andReturn('1');
+    $book->shouldReceive('getProperty')->andReturn($property);
+    $book->shouldReceive('getBookStatus')->andReturn(BookStatus::CONFIRMED);
+    $book->shouldReceive('getDateRange')->andReturn($dateRange);
+    $property->addBooking($book);
+
     expect($property->getBookings()[0]->getId())->toBe('1');
     expect($property->getBookings()[0]->getProperty())->toEqual($property);
     expect($property->getBookings()[0]->getBookStatus())->toBe(BookStatus::CONFIRMED);
+    expect($property->getBookings()[0]->getDateRange())->toEqual($dateRange);
 });
 
 
@@ -98,7 +106,14 @@ it('should validate if property is avaliable', function () {
     $property = new Property('1', 'Name', 'Descripton', 5, 10000);
     $dateRange = new DateRange(Carbon::parse('2025-01-10'), Carbon::parse('2025-01-18'));
     $user = new User('1', 'UserName');
-    new Booking('1', $property, $user, $dateRange, 5);
+
+    $book = Mockery::mock(Booking::class);
+    $book->shouldReceive('getId')->andReturn('1');
+    $book->shouldReceive('getProperty')->andReturn($property);
+    $book->shouldReceive('getBookStatus')->andReturn(BookStatus::CONFIRMED);
+    $book->shouldReceive('getDateRange')->andReturn($dateRange);
+    $property->addBooking($book);
+
     $dateRange2 = new DateRange(Carbon::parse('2025-01-15'), Carbon::parse('2025-01-20'));
     $dateRange3 = new DateRange(Carbon::parse('2025-01-20'), Carbon::parse('2025-01-24'));
     expect($property->isAvaliable($dateRange))->toBe(false);
