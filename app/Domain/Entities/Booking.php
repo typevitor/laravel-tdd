@@ -83,7 +83,7 @@ class Booking
         }
 
         if ($cancelDate->diffInDays($checkIn) < 7 && $cancelDate->diffInDays($checkIn) > 1) {
-            $this->totalPrice = $this->getTotalPrice() * 0.5;
+            $this->totalPrice = (int) round($this->getTotalPrice() * 0.5, 0);
         }
     }
 }
