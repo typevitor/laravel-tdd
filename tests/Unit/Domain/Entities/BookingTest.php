@@ -110,4 +110,22 @@ it('should cancel a booking without chargeback when cancel is within 1 day from 
 });
 
 
+it('should cancel a booking with 100% chargeback when cancel is more than 7 days from checkin', function () {
+    //Arrange
+    $property = new Property('1', 'Casa', 'Casa', 5, 10000);
+    $user = new User('1', 'UserName');
+    $startDate = Carbon::parse('2025-01-10');
+    $endDate = Carbon::parse('2025-01-15');
+    $dateRange = new DateRange($startDate, $endDate);
+    $occupants = 4;
+    $booking = new Booking('1', $property, $user, $dateRange, $occupants);
+
+    $currentDate = Carbon::parse('2025-01-01');
+    $booking->cancel($currentDate);
+
+    //Act ~ Assert
+    expect($booking->getBookStatus())->toBe(BookStatus::CANCELLED);
+    expect($booking->getTotalPrice())->toBe(0);
+
+});
 

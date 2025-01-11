@@ -70,8 +70,11 @@ class Booking
 
     public function cancel(Carbon $cancelDate): void
     {
-        if ($cancelDate->diffInDays($this->dateRange->getStartDate()) <= 1) {
-            $this->status = BookStatus::CANCELLED;
+        $this->status = BookStatus::CANCELLED;
+
+        $checkIn = $this->dateRange->getStartDate();
+        if ($cancelDate->diffInDays($checkIn) > 7) {
+            $this->totalPrice = 0;
         }
     }
 }
