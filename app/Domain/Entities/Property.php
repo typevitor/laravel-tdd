@@ -15,7 +15,7 @@ class Property
 
     public const BASE_QTDE_NIGHTS_FOR_DISCOUNT = 7;
 
-    private array $bookings = array();
+    private array $bookings = [];
 
     public function __construct(
         private readonly string $id,
@@ -91,7 +91,7 @@ class Property
 
     public function isAvaliable(DateRange $dateRange): bool
     {
-        foreach($this->bookings as $booking) {
+        foreach ($this->bookings as $booking) {
             if (
                 $booking->getBookStatus() === BookStatus::CONFIRMED &&
                 $booking->getDateRange()->overlaps($dateRange)

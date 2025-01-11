@@ -120,4 +120,3 @@ it('should validate if property is avaliable', function () {
     expect($property->isAvaliable($dateRange2))->toBe(false);
     expect($property->isAvaliable($dateRange3))->toBe(true);
 });
-

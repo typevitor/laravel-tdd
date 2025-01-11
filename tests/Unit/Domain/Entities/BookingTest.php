@@ -32,7 +32,7 @@ it('should throw an exception if number of occupants is zero or lower', function
     $property = new Property('1', 'Name', 'Descripton', 5, 10000);
     $dateRange = new DateRange(Carbon::parse('2025-01-10'), Carbon::parse('2025-01-18'));
     $user = new User('1', 'UserName');
-    expect(fn () => new Booking('1', $property, $user, $dateRange, 0))
+    expect(fn() => new Booking('1', $property, $user, $dateRange, 0))
         ->toThrow(BookMinimumOccupantsException::class, 'Number of occupants should be higher than zero.');
 });
 
@@ -40,11 +40,11 @@ it('should throw an exception if number of occupants is higher than property max
     $property = new Property('1', 'Name', 'Descripton', 5, 10000);
     $dateRange = new DateRange(Carbon::parse('2025-01-10'), Carbon::parse('2025-01-18'));
     $user = new User('1', 'UserName');
-    expect(fn () => new Booking('1', $property, $user, $dateRange, 10))
+    expect(fn() => new Booking('1', $property, $user, $dateRange, 10))
         ->toThrow(PropertyMaxOccupantsException::class);
 });
 
-it('should book a property with discount', function() {
+it('should book a property with discount', function () {
     $property = new Property('1', 'Casa', 'Casa', 5, 9000);
     $user = new User('1', 'UserName');
     $startDate = Carbon::parse('2025-01-10');
@@ -55,7 +55,7 @@ it('should book a property with discount', function() {
     expect($booking->getTotalPrice())->toBe(intval(9000 * 10 * Property::BASE_DISCOUNT));
 });
 
-it('should book a property without discount', function() {
+it('should book a property without discount', function () {
     //Arrange
     $property = new Property('1', 'Casa', 'Casa', 5, 9000);
     $user = new User('1', 'UserName');
@@ -87,7 +87,7 @@ it('should throw an exception when booking a unavailable property', function () 
     $dateRange2 = new DateRange($startDate2, $endDate2);
 
     //Act ~ Assert
-    expect(fn () => new Booking('2', $property, $user, $dateRange2, 5))
+    expect(fn() => new Booking('2', $property, $user, $dateRange2, 5))
         ->toThrow(UnavaliablePropertyException::class, 'Property is unavaliable for given date range.');
 });
 
@@ -163,5 +163,5 @@ it('should throw an exception if try to cancel a booking that is cancelled', fun
     $booking->cancel($currentDate);
     //Act ~ Assert
 
-    expect(fn () => $booking->cancel($currentDate))->toThrow(BookingAlreadyCancelledException::class);
+    expect(fn() => $booking->cancel($currentDate))->toThrow(BookingAlreadyCancelledException::class);
 });
