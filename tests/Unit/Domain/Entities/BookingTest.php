@@ -6,6 +6,7 @@ use App\Domain\Entities\Booking;
 use App\Domain\Entities\Property;
 use App\Domain\Entities\User;
 use App\Domain\ValueObjects\DateRange;
+use App\Enum\BookStatus;
 use App\Exceptions\Booking\BookMinimumOccupantsException;
 use App\Exceptions\Booking\UnavaliablePropertyException;
 use App\Exceptions\Property\PropertyMaxOccupantsException;
@@ -88,4 +89,25 @@ it('should throw an exception when booking a unavailable property', function () 
     expect(fn () => new Booking('2', $property, $user, $dateRange2, 5))
         ->toThrow(UnavaliablePropertyException::class, 'Property is unavaliable for given date range.');
 });
+
+it('should cancel a booking without chargeback when cancel is within 1 day from checkin', function () {
+    //Arrange
+    $property = new Property('1', 'Casa', 'Casa', 5, 10000);
+    $user = new User('1', 'UserName');
+    $startDate = Carbon::parse('2025-01-10');
+    $endDate = Carbon::parse('2025-01-15');
+    $dateRange = new DateRange($startDate, $endDate);
+    $occupants = 4;
+    $booking = new Booking('1', $property, $user, $dateRange, $occupants);
+
+    $currentDate = Carbon::parse('2025-01-09');
+    $booking->cancel($currentDate);
+
+    //Act ~ Assert
+    expect($booking->getBookStatus())->toBe(BookStatus::CANCELLED);
+    expect($booking->getTotalPrice())->toBe(5 * 10000);
+
+});
+
+
 

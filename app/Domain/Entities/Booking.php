@@ -6,6 +6,7 @@ use App\Domain\ValueObjects\DateRange;
 use App\Enum\BookStatus;
 use App\Exceptions\Booking\BookMinimumOccupantsException;
 use App\Exceptions\Booking\UnavaliablePropertyException;
+use Carbon\Carbon;
 
 class Booking
 {
@@ -65,5 +66,12 @@ class Booking
     public function getTotalPrice(): int
     {
         return $this->totalPrice;
+    }
+
+    public function cancel(Carbon $cancelDate): void
+    {
+        if ($cancelDate->diffInDays($this->dateRange->getStartDate()) <= 1) {
+            $this->status = BookStatus::CANCELLED;
+        }
     }
 }
