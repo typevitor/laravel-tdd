@@ -3,6 +3,7 @@
 namespace App\Domain\Entities;
 
 use App\Domain\ValueObjects\DateRange;
+use App\Enum\BookStatus;
 use App\Exceptions\Property\PropertyInvalidOccupantsNumberException;
 use App\Exceptions\Property\PropertyInvalidPricePerNightException;
 use App\Exceptions\Property\PropertyMaxOccupantsException;
@@ -13,6 +14,8 @@ class Property
     public const BASE_DISCOUNT = 0.9;
 
     public const BASE_QTDE_NIGHTS_FOR_DISCOUNT = 7;
+
+    private array $bookings = [];
 
     public function __construct(
         private readonly string $id,
@@ -32,6 +35,11 @@ class Property
         if ($pricePerNight <= 0) {
             throw new PropertyInvalidPricePerNightException();
         }
+    }
+
+    public function addBooking(Booking $booking): void
+    {
+        $this->bookings[] = $booking;
     }
 
     public function getId(): string
@@ -59,6 +67,11 @@ class Property
         return $this->pricePerNight;
     }
 
+    public function getBookings(): array
+    {
+        return $this->bookings;
+    }
+
     public function validateOccupantsQuantity(int $occupants): void
     {
         if ($occupants > $this->maxOccupants) {
@@ -74,5 +87,23 @@ class Property
         }
 
         return (int) round($basePrice, 0);
+    }
+
+    public function isAvaliable(DateRange $dateRange): bool
+    {
+        foreach ($this->bookings as $booking) {
+            if (
+                $booking->getBookStatus() === BookStatus::CONFIRMED &&
+                $booking->getDateRange()->overlaps($dateRange)
+            ) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public function isUnavaliable(DateRange $dateRange): bool
+    {
+        return !$this->isAvaliable($dateRange);
     }
 }
