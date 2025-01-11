@@ -4,6 +4,7 @@ namespace App\Domain\Entities;
 
 use App\Domain\ValueObjects\DateRange;
 use App\Enum\BookStatus;
+use App\Exceptions\Booking\BookingAlreadyCancelledException;
 use App\Exceptions\Booking\BookMinimumOccupantsException;
 use App\Exceptions\Booking\UnavaliablePropertyException;
 use Carbon\Carbon;
@@ -70,6 +71,10 @@ class Booking
 
     public function cancel(Carbon $cancelDate): void
     {
+        if ($this->getBookStatus() === BookStatus::CANCELLED) {
+            throw new BookingAlreadyCancelledException();
+        }
+
         $this->status = BookStatus::CANCELLED;
 
         $checkIn = $this->dateRange->getStartDate();

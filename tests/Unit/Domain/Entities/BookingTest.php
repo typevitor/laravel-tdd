@@ -7,6 +7,7 @@ use App\Domain\Entities\Property;
 use App\Domain\Entities\User;
 use App\Domain\ValueObjects\DateRange;
 use App\Enum\BookStatus;
+use App\Exceptions\Booking\BookingAlreadyCancelledException;
 use App\Exceptions\Booking\BookMinimumOccupantsException;
 use App\Exceptions\Booking\UnavaliablePropertyException;
 use App\Exceptions\Property\PropertyMaxOccupantsException;
@@ -147,3 +148,20 @@ it('should cancel a booking with 100% chargeback when cancel is within 1 to 7 da
 
 });
 
+
+it('should throw an exception if try to cancel a booking that is cancelled', function () {
+    //Arrange
+    $property = new Property('1', 'Casa', 'Casa', 5, 10000);
+    $user = new User('1', 'UserName');
+    $startDate = Carbon::parse('2025-01-10');
+    $endDate = Carbon::parse('2025-01-15');
+    $dateRange = new DateRange($startDate, $endDate);
+    $occupants = 4;
+    $booking = new Booking('1', $property, $user, $dateRange, $occupants);
+
+    $currentDate = Carbon::parse('2025-01-01');
+    $booking->cancel($currentDate);
+    //Act ~ Assert
+
+    expect(fn () => $booking->cancel($currentDate))->toThrow(BookingAlreadyCancelledException::class);
+});
