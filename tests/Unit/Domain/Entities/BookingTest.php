@@ -7,6 +7,7 @@ use App\Domain\Entities\Property;
 use App\Domain\Entities\User;
 use App\Domain\ValueObjects\DateRange;
 use App\Exceptions\Booking\BookMinimumOccupantsException;
+use App\Exceptions\Booking\UnavaliablePropertyException;
 use App\Exceptions\Property\PropertyMaxOccupantsException;
 use Carbon\Carbon;
 
@@ -53,12 +54,38 @@ it('should book a property with discount', function() {
 });
 
 it('should book a property without discount', function() {
+    //Arrange
     $property = new Property('1', 'Casa', 'Casa', 5, 9000);
     $user = new User('1', 'UserName');
     $startDate = Carbon::parse('2025-01-10');
     $endDate = Carbon::parse('2025-01-14');
     $dateRange = new DateRange($startDate, $endDate);
     $occupants = 4;
+
+    //Act
     $booking = new Booking('1', $property, $user, $dateRange, $occupants);
+
+    //Assert
     expect($booking->getTotalPrice())->toBe(intval(9000 * 4));
 });
+
+
+it('should throw an exception when booking a unavailable property', function () {
+    //Arrange
+    $property = new Property('1', 'Casa', 'Casa', 5, 10000);
+    $user = new User('1', 'UserName');
+    $startDate = Carbon::parse('2025-01-01');
+    $endDate = Carbon::parse('2025-01-05');
+    $dateRange = new DateRange($startDate, $endDate);
+    $occupants = 4;
+    new Booking('1', $property, $user, $dateRange, $occupants);
+
+    $startDate2 = Carbon::parse('2025-01-04');
+    $endDate2 = Carbon::parse('2025-01-10');
+    $dateRange2 = new DateRange($startDate2, $endDate2);
+
+    //Act ~ Assert
+    expect(fn () => new Booking('2', $property, $user, $dateRange2, 5))
+        ->toThrow(UnavaliablePropertyException::class, 'Property is unavaliable for given date range.');
+});
+

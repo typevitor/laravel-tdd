@@ -101,4 +101,9 @@ class Property
         }
         return true;
     }
+
+    public function isUnavaliable(DateRange $dateRange): bool
+    {
+        return !$this->isAvaliable($dateRange);
+    }
 }

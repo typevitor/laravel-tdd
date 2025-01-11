@@ -5,6 +5,7 @@ namespace App\Domain\Entities;
 use App\Domain\ValueObjects\DateRange;
 use App\Enum\BookStatus;
 use App\Exceptions\Booking\BookMinimumOccupantsException;
+use App\Exceptions\Booking\UnavaliablePropertyException;
 
 class Booking
 {
@@ -21,6 +22,11 @@ class Booking
         if ($occupants <= 0) {
             throw new BookMinimumOccupantsException();
         }
+
+        if ($property->isUnavaliable($dateRange)) {
+            throw new UnavaliablePropertyException();
+        }
+
         $property->validateOccupantsQuantity($occupants);
         $property->addBooking($this);
         $this->totalPrice = $property->calculateTotalPrice($dateRange);
