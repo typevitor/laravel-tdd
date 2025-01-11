@@ -41,3 +41,24 @@ it('should throw an exception if number of occupants is higher than property max
         ->toThrow(PropertyMaxOccupantsException::class);
 });
 
+it('should book a property with discount', function() {
+    $property = new Property('1', 'Casa', 'Casa', 5, 9000);
+    $user = new User('1', 'UserName');
+    $startDate = Carbon::parse('2025-01-10');
+    $endDate = Carbon::parse('2025-01-20');
+    $dateRange = new DateRange($startDate, $endDate);
+    $occupants = 4;
+    $booking = new Booking('1', $property, $user, $dateRange, $occupants);
+    expect($booking->getTotalPrice())->toBe(intval(9000 * 10 * Property::BASE_DISCOUNT));
+});
+
+it('should book a property without discount', function() {
+    $property = new Property('1', 'Casa', 'Casa', 5, 9000);
+    $user = new User('1', 'UserName');
+    $startDate = Carbon::parse('2025-01-10');
+    $endDate = Carbon::parse('2025-01-14');
+    $dateRange = new DateRange($startDate, $endDate);
+    $occupants = 4;
+    $booking = new Booking('1', $property, $user, $dateRange, $occupants);
+    expect($booking->getTotalPrice())->toBe(intval(9000 * 4));
+});

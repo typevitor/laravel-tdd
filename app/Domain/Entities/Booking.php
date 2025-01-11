@@ -4,12 +4,12 @@ namespace App\Domain\Entities;
 
 use App\Domain\ValueObjects\DateRange;
 use App\Enum\BookStatus;
-use App\Exceptions\Booking\BookMaximumOccupantsException;
 use App\Exceptions\Booking\BookMinimumOccupantsException;
 
 class Booking
 {
     private BookStatus $status = BookStatus::CONFIRMED;
+    private int $totalPrice;
 
     public function __construct(
         private readonly string $id,
@@ -23,6 +23,7 @@ class Booking
         }
         $property->validateOccupantsQuantity($occupants);
         $property->addBooking($this);
+        $this->totalPrice = $property->calculateTotalPrice($dateRange);
     }
 
     public function getId(): string
@@ -53,5 +54,10 @@ class Booking
     public function getBookStatus(): BookStatus
     {
         return $this->status;
+    }
+
+    public function getTotalPrice(): int
+    {
+        return $this->totalPrice;
     }
 }
