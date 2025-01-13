@@ -4,7 +4,7 @@ namespace App\Repository;
 
 use App\Domain\Entities\User;
 
-class FakeUserRepository
+class FakeUserRepository implements IUserRepository
 {
     private array $users = array();
 
