@@ -2,6 +2,9 @@
 
 namespace App\Domain\Entities;
 
+use App\Domain\Cancelation\FullRefund;
+use App\Domain\Cancelation\PartialRefund;
+use App\Domain\Cancelation\RefundFactory;
 use App\Domain\ValueObjects\DateRange;
 use App\Enum\BookStatus;
 use App\Exceptions\Booking\BookingAlreadyCancelledException;
@@ -74,16 +77,10 @@ class Booking
         if ($this->getBookStatus() === BookStatus::CANCELLED) {
             throw new BookingAlreadyCancelledException();
         }
-
-        $this->status = BookStatus::CANCELLED;
-
         $checkIn = $this->dateRange->getStartDate();
-        if ($cancelDate->diffInDays($checkIn) > 7) {
-            $this->totalPrice = 0;
-        }
-
-        if ($cancelDate->diffInDays($checkIn) < 7 && $cancelDate->diffInDays($checkIn) > 1) {
-            $this->totalPrice = (int) round($this->getTotalPrice() * 0.5, 0);
-        }
+        $diffUntilCheckinInDays = $cancelDate->diffInDays($checkIn);
+        $refundRule = RefundFactory::getRefundRule($diffUntilCheckinInDays);
+        $this->totalPrice = $refundRule->calculateRefund($this->totalPrice);
+        $this->status = BookStatus::CANCELLED;
     }
 }

@@ -129,7 +129,7 @@ it('should cancel a booking with 100% chargeback when cancel is more than 7 days
 
 });
 
-it('should cancel a booking with 100% chargeback when cancel is within 1 to 7 days from checkin', function () {
+it('should cancel a booking with 50% chargeback when cancel is within 1 to 7 days from checkin', function () {
     //Arrange
     $property = new Property('1', 'Casa', 'Casa', 5, 10000);
     $user = new User('1', 'UserName');
