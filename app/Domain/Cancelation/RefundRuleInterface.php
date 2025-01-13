@@ -4,5 +4,5 @@ namespace App\Domain\Cancelation;
 
 interface RefundRuleInterface
 {
-    function calculateRefund(int $totalPrice): int;
+    public function calculateRefund(int $totalPrice): int;
 }

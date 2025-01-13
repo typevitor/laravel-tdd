@@ -79,8 +79,9 @@ class Booking
         }
         $checkIn = $this->dateRange->getStartDate();
         $diffUntilCheckinInDays = $cancelDate->diffInDays($checkIn);
-        $refundRule = RefundFactory::getRefundRule($diffUntilCheckinInDays);
+        $refundRule = RefundFactory::getRefundRule((int) $diffUntilCheckinInDays);
         $this->totalPrice = $refundRule->calculateRefund($this->totalPrice);
         $this->status = BookStatus::CANCELLED;
     }
+
 }
