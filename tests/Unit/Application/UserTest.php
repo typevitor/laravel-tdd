@@ -14,7 +14,7 @@ uses(TestCase::class, RefreshDatabase::class);
 
 describe('User Service', function () {
 
-    beforeEach(function() {
+    beforeEach(function () {
         $fakeUserRepository = new FakeUserRepository();
         // $fakeUserRepository = new EloquentUserRepository();
         $this->userService = new UserService($fakeUserRepository);

@@ -7,9 +7,7 @@ use App\Repository\IUserRepository;
 
 class UserService
 {
-    public function __construct(private readonly IUserRepository $iUserRepository)
-    {
-    }
+    public function __construct(private readonly IUserRepository $iUserRepository) {}
 
     public function findById(string $id): User|null
     {

@@ -6,7 +6,7 @@ use App\Domain\Entities\User;
 
 class FakeUserRepository implements IUserRepository
 {
-    private array $users = array();
+    private array $users = [];
 
     public function __construct()
     {
@@ -18,7 +18,9 @@ class FakeUserRepository implements IUserRepository
     public function findById(string $id): User|null
     {
         foreach ($this->users as $user) {
-            if ($user->getId() === $id) return $user;
+            if ($user->getId() === $id) {
+                return $user;
+            }
         }
 
         return null;

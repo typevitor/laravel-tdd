@@ -20,7 +20,7 @@ class EloquentUserRepository implements IUserRepository
         $modelUser = ModelsUser::find($id);
         if ($modelUser) {
             return new User(
-                $modelUser->id,
+                (string) $modelUser->id,
                 $modelUser->name,
             );
         }

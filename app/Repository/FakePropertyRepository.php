@@ -6,7 +6,7 @@ use App\Domain\Entities\Property;
 
 class FakePropertyRepository implements IPropertyRepository
 {
-    private array $properties = array();
+    private array $properties = [];
 
     public function __construct()
     {
@@ -18,7 +18,9 @@ class FakePropertyRepository implements IPropertyRepository
     public function findById(string $id): Property|null
     {
         foreach ($this->properties as $property) {
-            if ($property->getId() === $id) return $property;
+            if ($property->getId() === $id) {
+                return $property;
+            }
         }
 
         return null;

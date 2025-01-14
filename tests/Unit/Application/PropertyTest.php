@@ -8,7 +8,7 @@ use App\Repository\FakePropertyRepository;
 
 describe('Property Service', function () {
 
-    beforeEach(function() {
+    beforeEach(function () {
         $fakePropertyRepository = new FakePropertyRepository();
         $this->propertyService = new PropertyService($fakePropertyRepository);
     });
