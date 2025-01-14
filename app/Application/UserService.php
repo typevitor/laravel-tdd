@@ -15,4 +15,9 @@ class UserService
     {
         return $this->iUserRepository->findById($id);
     }
+
+    public function save(User $user): void
+    {
+        $this->iUserRepository->save($user);
+    }
 }

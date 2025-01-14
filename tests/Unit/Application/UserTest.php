@@ -15,8 +15,8 @@ uses(TestCase::class, RefreshDatabase::class);
 describe('User Service', function () {
 
     beforeEach(function() {
-        // $fakeUserRepository = new FakeUserRepository();
-        $fakeUserRepository = new EloquentUserRepository();
+        $fakeUserRepository = new FakeUserRepository();
+        // $fakeUserRepository = new EloquentUserRepository();
         $this->userService = new UserService($fakeUserRepository);
     });
 
@@ -30,5 +30,14 @@ describe('User Service', function () {
         expect($user)->toBeInstanceOf(User::class);
         expect($user->getId())->toBe('1');
         expect($user->getName())->toBe('Name');
+    });
+
+    it('should save a new user', function () {
+        $user = new User('2', 'Name 2');
+        $this->userService->save($user);
+        $savedUser = $this->userService->findById('2');
+        expect($savedUser)->toBeInstanceOf(User::class);
+        expect($savedUser->getId())->toBe('2');
+        expect($savedUser->getName())->toBe('Name 2');
     });
 });

@@ -23,4 +23,9 @@ class FakeUserRepository implements IUserRepository
 
         return null;
     }
+
+    public function save(User $user): void
+    {
+        $this->users[] = $user;
+    }
 }

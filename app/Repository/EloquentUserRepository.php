@@ -26,4 +26,9 @@ class EloquentUserRepository implements IUserRepository
         }
         return null;
     }
+
+    public function save(User $user): void
+    {
+        //
+    }
 }
