@@ -29,6 +29,9 @@ class EloquentUserRepository implements IUserRepository
 
     public function save(User $user): void
     {
-        //
+        ModelsUser::factory()->create([
+            'id' => $user->getId(),
+            'name' => $user->getName(),
+        ]);
     }
 }
