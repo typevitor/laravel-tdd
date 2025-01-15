@@ -46,7 +46,7 @@ describe('Booking Service', function () {
         expect($booking)->toBe(null);
     });
 
-    it('Should successful book a property', function() {
+    it('Should successful book a property', function () {
         $mockProperty = Mockery::mock(Property::class);
         $mockProperty->shouldReceive('getId')->andReturn('1');
         $mockProperty->shouldReceive('isAvaliable')->andReturn(true);
@@ -81,7 +81,7 @@ describe('Booking Service', function () {
         expect($savedBooking->getId())->toBe($booking->getId());
     });
 
-    it('Should throw exception if property is not found', function() {
+    it('Should throw exception if property is not found', function () {
         $mockProperty = Mockery::mock(Property::class);
         $mockProperty->shouldReceive('getId')->andReturn('1');
         $mockProperty->shouldReceive('isAvaliable')->andReturn(true);
@@ -103,7 +103,7 @@ describe('Booking Service', function () {
         })->toThrow(PropertyNotFoundException::class);
     });
 
-    it('Should throw exception if user is not found', function() {
+    it('Should throw exception if user is not found', function () {
         $mockProperty = Mockery::mock(Property::class);
         $mockProperty->shouldReceive('getId')->andReturn('1');
         $this->mockPropertyService->shouldReceive('findById')->andReturn($mockProperty);

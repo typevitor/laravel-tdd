@@ -8,10 +8,7 @@ class FakeBookingRepository implements IBookingRepository
 {
     private array $bookings = [];
 
-    public function __construct()
-    {
-
-    }
+    public function __construct() {}
 
     public function findById(string $id): Booking|null
     {
