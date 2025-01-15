@@ -12,6 +12,7 @@ use App\Domain\Entities\User;
 use App\Domain\ValueObjects\DateRange;
 use App\Enum\BookStatus;
 use App\Exceptions\Property\PropertyNotFoundException;
+use App\Exceptions\User\UserNotFoundException;
 use App\Repository\FakeBookingRepository;
 use Mockery;
 
@@ -100,5 +101,26 @@ describe('Booking Service', function () {
         expect(function () use ($bookingDTO) {
             $this->bookingService->save($bookingDTO);
         })->toThrow(PropertyNotFoundException::class);
+    });
+
+    it('Should throw exception if user is not found', function() {
+        $mockProperty = Mockery::mock(Property::class);
+        $mockProperty->shouldReceive('getId')->andReturn('1');
+        $this->mockPropertyService->shouldReceive('findById')->andReturn($mockProperty);
+
+        $mockUser = Mockery::mock(User::class);
+        $mockUser->shouldReceive('getId')->andReturn('1');
+        $this->mockUserService->shouldReceive('findById')->andReturn(null);
+
+        $bookingDTO = new CreateBookingDTO(
+            "1",
+            "2",
+            \Carbon\Carbon::parse('2025-01-01'),
+            \Carbon\Carbon::parse('2025-01-05'),
+            5,
+        );
+        expect(function () use ($bookingDTO) {
+            $this->bookingService->save($bookingDTO);
+        })->toThrow(UserNotFoundException::class);
     });
 });
