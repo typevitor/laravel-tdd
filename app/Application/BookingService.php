@@ -17,6 +17,7 @@ class BookingService
         private readonly IBookingRepository $iBookingRepository,
         private readonly PropertyService $propertyService,
         private readonly UserService $userService,
+        private readonly DateRange $dateRange,
     ) {}
 
     public function findById(string $id): Booking|null
@@ -37,12 +38,11 @@ class BookingService
             throw new UserNotFoundException();
         }
 
-        $dateRange = new DateRange($bookingDTO->startDate, $bookingDTO->endDate);
         $booking = new Booking(
             Str::uuid()->toString(),
             $property,
             $user,
-            $dateRange,
+            $this->dateRange,
             $bookingDTO->occupants
         );
 

@@ -9,6 +9,7 @@ use App\Application\UserService;
 use App\Domain\Entities\Booking;
 use App\Domain\Entities\Property;
 use App\Domain\Entities\User;
+use App\Domain\ValueObjects\DateRange;
 use App\Enum\BookStatus;
 use App\Repository\FakeBookingRepository;
 use Mockery;
@@ -24,10 +25,17 @@ describe('Booking Service', function () {
         /** @var MockObject|UserService */
         $this->mockUserService = Mockery::mock(UserService::class);
 
+        /** @var MockObject|UserService */
+        $this->date = Mockery::mock(UserService::class);
+
+        /** @var MockObject|DateRange */
+        $this->mockDateRange = Mockery::mock(DateRange::class);
+
         $this->bookingService = new BookingService(
             $fakeBookingRepository,
             $this->mockPropertyService,
             $this->mockUserService,
+            $this->mockDateRange
         );
     });
 
@@ -50,6 +58,10 @@ describe('Booking Service', function () {
         $mockUser = Mockery::mock(User::class);
         $mockUser->shouldReceive('getId')->andReturn('1');
         $this->mockUserService->shouldReceive('findById')->andReturn($mockUser);
+
+        $this->mockDateRange->shouldReceive('getStartDate')->andReturn(\Carbon\Carbon::parse('2025-01-01'));
+        $this->mockDateRange->shouldReceive('getEndDate')->andReturn(\Carbon\Carbon::parse('2025-01-05'));
+        $this->mockDateRange->shouldReceive('getReservationNights')->andReturn(4);
 
         $bookingDTO = new CreateBookingDTO(
             "1",
