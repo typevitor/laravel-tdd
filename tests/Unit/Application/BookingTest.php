@@ -11,6 +11,7 @@ use App\Domain\Entities\Property;
 use App\Domain\Entities\User;
 use App\Domain\ValueObjects\DateRange;
 use App\Enum\BookStatus;
+use App\Exceptions\Property\PropertyNotFoundException;
 use App\Repository\FakeBookingRepository;
 use Mockery;
 
@@ -45,7 +46,6 @@ describe('Booking Service', function () {
     });
 
     it('Should successful book a property', function() {
-
         $mockProperty = Mockery::mock(Property::class);
         $mockProperty->shouldReceive('getId')->andReturn('1');
         $mockProperty->shouldReceive('isAvaliable')->andReturn(true);
@@ -78,5 +78,27 @@ describe('Booking Service', function () {
 
         $savedBooking = $this->bookingService->findById($booking->getId());
         expect($savedBooking->getId())->toBe($booking->getId());
+    });
+
+    it('Should throw exception if property is not found', function() {
+        $mockProperty = Mockery::mock(Property::class);
+        $mockProperty->shouldReceive('getId')->andReturn('1');
+        $mockProperty->shouldReceive('isAvaliable')->andReturn(true);
+        $mockProperty->shouldReceive('isUnavaliable')->andReturn(false);
+        $mockProperty->shouldReceive('validateOccupantsQuantity');
+        $mockProperty->shouldReceive('calculateTotalPrice')->andReturn(50000);
+        $mockProperty->shouldReceive('addBooking');
+        $this->mockPropertyService->shouldReceive('findById')->andReturn(null);
+
+        $bookingDTO = new CreateBookingDTO(
+            "2",
+            "1",
+            \Carbon\Carbon::parse('2025-01-01'),
+            \Carbon\Carbon::parse('2025-01-05'),
+            5,
+        );
+        expect(function () use ($bookingDTO) {
+            $this->bookingService->save($bookingDTO);
+        })->toThrow(PropertyNotFoundException::class);
     });
 });
