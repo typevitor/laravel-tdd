@@ -1,0 +1,52 @@
+<?php
+
+namespace App\Application;
+
+use App\Application\DTO\CreateBookingDTO;
+use App\Domain\Entities\Booking;
+use App\Domain\Entities\Property;
+use App\Domain\ValueObjects\DateRange;
+use App\Exceptions\Property\PropertyNotFoundException;
+use App\Exceptions\User\UserNotFoundException;
+use App\Repository\IBookingRepository;
+use Illuminate\Support\Str;
+
+class BookingService
+{
+    public function __construct(
+        private readonly IBookingRepository $iBookingRepository,
+        private readonly PropertyService $propertyService,
+        private readonly UserService $userService,
+    ) {}
+
+    public function findById(string $id): Booking|null
+    {
+        return $this->iBookingRepository->findById($id);
+    }
+
+
+    public function save(CreateBookingDTO $bookingDTO): Booking
+    {
+        $property = $this->propertyService->findById($bookingDTO->propertyId);
+        if (!$property) {
+            throw new PropertyNotFoundException();
+        }
+
+        $user = $this->userService->findById($bookingDTO->userId);
+        if (!$user) {
+            throw new UserNotFoundException();
+        }
+
+        $dateRange = new DateRange($bookingDTO->startDate, $bookingDTO->endDate);
+        $booking = new Booking(
+            Str::uuid()->toString(),
+            $property,
+            $user,
+            $dateRange,
+            $bookingDTO->occupants
+        );
+
+        $this->iBookingRepository->save($booking);
+        return $booking;
+    }
+}
