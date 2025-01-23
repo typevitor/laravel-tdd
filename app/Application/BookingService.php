@@ -4,7 +4,6 @@ namespace App\Application;
 
 use App\Application\DTO\CreateBookingDTO;
 use App\Domain\Entities\Booking;
-use App\Domain\Entities\Property;
 use App\Domain\ValueObjects\DateRange;
 use App\Exceptions\Property\PropertyNotFoundException;
 use App\Exceptions\User\UserNotFoundException;
