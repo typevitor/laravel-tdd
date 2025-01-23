@@ -20,7 +20,7 @@ use Mockery;
 describe('Booking Service', function () {
 
     beforeEach(function () {
-        $fakeBookingRepository = new FakeBookingRepository();
+        $this->fakeBookingRepository = new FakeBookingRepository();
 
         /** @var MockObject|PropertyService */
         $this->mockPropertyService = Mockery::mock(PropertyService::class);
@@ -35,11 +35,15 @@ describe('Booking Service', function () {
         $this->mockDateRange = Mockery::mock(DateRange::class);
 
         $this->bookingService = new BookingService(
-            $fakeBookingRepository,
+            $this->fakeBookingRepository,
             $this->mockPropertyService,
             $this->mockUserService,
             $this->mockDateRange
         );
+    });
+
+    afterEach(function () {
+        Mockery::close();
     });
 
     it('should return null when invalid ID is given', function () {
@@ -155,5 +159,49 @@ describe('Booking Service', function () {
         expect(function () use ($bookingDTO) {
             $this->bookingService->save($bookingDTO);
         })->toThrow(UnavaliablePropertyException::class);
+    });
+
+    it('Should cancel a book', function () {
+        $mockProperty = Mockery::mock(Property::class);
+        $mockProperty->shouldReceive('validateOccupantsQuantity');
+        $mockProperty->shouldReceive('isUnavaliable')->once()->andReturn(false);
+        $mockProperty->shouldReceive('calculateTotalPrice')->once()->andReturn(50000);
+        $mockProperty->shouldReceive('addBooking')->once();
+        $this->mockPropertyService->shouldReceive('findById')->andReturn($mockProperty);
+
+        $mockUser = Mockery::mock(User::class);
+        $mockUser->shouldReceive('getId')->andReturn('1');
+        $this->mockUserService->shouldReceive('findById')->andReturn($mockUser);
+
+        $this->mockDateRange->shouldReceive('getStartDate')->andReturn(\Carbon\Carbon::parse('2025-01-01'));
+        $this->mockDateRange->shouldReceive('getEndDate')->andReturn(\Carbon\Carbon::parse('2025-01-05'));
+        $this->mockDateRange->shouldReceive('getReservationNights')->andReturn(4);
+
+        $bookingSpy = \Mockery::spy($this->fakeBookingRepository);
+        $bookingSpy->shouldAllowMockingMethod('save');
+        $bookingSpy->shouldAllowMockingMethod('cancel');
+        $bookingService = new BookingService(
+            $bookingSpy,
+            $this->mockPropertyService,
+            $this->mockUserService,
+            $this->mockDateRange
+        );
+
+        $bookingDTO = new CreateBookingDTO(
+            "1",
+            "1",
+            \Carbon\Carbon::parse('2025-01-01'),
+            \Carbon\Carbon::parse('2025-01-05'),
+            5,
+        );
+
+        $booking = $bookingService->save($bookingDTO);
+        $bookingService->cancel($booking->getId());
+        $cancelledBook = $bookingService->findById($booking->getId());
+        expect($cancelledBook->getBookStatus())->toBe(BookStatus::CANCELLED);
+        $bookingSpy->shouldHaveReceived('save')->twice();
+        $bookingSpy->shouldHaveReceived('findById')->twice();
+        $bookingSpy->shouldHaveReceived('findById')->with($booking->getId());
+
     });
 });

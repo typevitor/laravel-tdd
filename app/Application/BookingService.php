@@ -48,4 +48,11 @@ class BookingService
         $this->iBookingRepository->save($booking);
         return $booking;
     }
+
+    public function cancel(string $id): void
+    {
+        $booking = $this->findById($id);
+        $booking->cancel(new \Carbon\Carbon('now'));
+        $this->iBookingRepository->save($booking);
+    }
 }
