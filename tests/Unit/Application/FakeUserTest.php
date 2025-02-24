@@ -4,8 +4,6 @@ namespace Tests\Unit\Application;
 
 use App\Application\UserService;
 use App\Domain\Entities\User;
-use App\Models\User as ModelsUser;
-use App\Repository\EloquentUserRepository;
 use App\Repository\FakeUserRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -16,7 +14,6 @@ describe('User Service', function () {
 
     beforeEach(function () {
         $fakeUserRepository = new FakeUserRepository();
-        // $fakeUserRepository = new EloquentUserRepository();
         $this->userService = new UserService($fakeUserRepository);
     });
 
