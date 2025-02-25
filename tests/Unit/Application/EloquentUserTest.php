@@ -10,7 +10,7 @@ use Tests\TestCase;
 
 uses(TestCase::class, RefreshDatabase::class);
 
-describe('User Service', function () {
+describe('User Eloquent Service', function () {
 
     beforeEach(function () {
         $fakeUserRepository = new EloquentUserRepository();
