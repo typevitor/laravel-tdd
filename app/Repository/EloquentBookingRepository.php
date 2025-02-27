@@ -10,9 +10,7 @@ use App\Models\Booking;
 
 class EloquentBookingRepository implements IBookingRepository
 {
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public function save(EntityBooking $booking): void
     {
