@@ -2,8 +2,8 @@
 
 namespace App\Enum;
 
-enum BookStatus
+enum BookStatus: string
 {
-    case CONFIRMED;
-    case CANCELLED;
+    case CONFIRMED = 'CONFIRMED';
+    case CANCELLED = 'CANCELLED';
 }

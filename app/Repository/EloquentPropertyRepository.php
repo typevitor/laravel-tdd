@@ -36,6 +36,7 @@ class EloquentPropertyRepository implements IPropertyRepository
     public function save(EntitiesProperty $property): void
     {
         Property::create([
+            'id' => $property->getId(),
             'name' => $property->getName(),
             'description' => $property->getDescription(),
             'max_occupants' => $property->getMaxOccupants(),

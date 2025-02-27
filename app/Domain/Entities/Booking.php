@@ -2,8 +2,6 @@
 
 namespace App\Domain\Entities;
 
-use App\Domain\Cancelation\FullRefund;
-use App\Domain\Cancelation\PartialRefund;
 use App\Domain\Cancelation\RefundFactory;
 use App\Domain\ValueObjects\DateRange;
 use App\Enum\BookStatus;
@@ -35,6 +33,16 @@ class Booking
         $property->validateOccupantsQuantity($occupants);
         $property->addBooking($this);
         $this->totalPrice = $property->calculateTotalPrice($dateRange);
+    }
+
+    public function setBookStatus(BookStatus $status): void
+    {
+        $this->status = $status;
+    }
+
+    public function setTotalPrice(int $totalPrice): void
+    {
+        $this->totalPrice = $totalPrice;
     }
 
     public function getId(): string
