@@ -6,7 +6,7 @@ use App\Application\PropertyService;
 use App\Domain\Entities\Property;
 use App\Repository\FakePropertyRepository;
 
-describe('Property Service', function () {
+describe('PropertyService', function () {
 
     beforeEach(function () {
         $fakePropertyRepository = new FakePropertyRepository();

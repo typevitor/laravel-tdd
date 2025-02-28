@@ -17,7 +17,7 @@ use App\Exceptions\User\UserNotFoundException;
 use App\Repository\FakeBookingRepository;
 use Mockery;
 
-describe('Booking Service', function () {
+describe('BookingService', function () {
 
     beforeEach(function () {
         $this->fakeBookingRepository = new FakeBookingRepository();

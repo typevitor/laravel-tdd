@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\Application;
 
-use App\Application\UserService;
 use App\Domain\Entities\User;
 use App\Repository\EloquentUserRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -13,17 +12,16 @@ uses(TestCase::class, RefreshDatabase::class);
 describe('User Eloquent Service', function () {
 
     beforeEach(function () {
-        $fakeUserRepository = new EloquentUserRepository();
-        $this->userService = new UserService($fakeUserRepository);
+        $this->fakeUserRepository = new EloquentUserRepository();
     });
 
     it('should return null when invalid ID is given', function () {
-        $user = $this->userService->findById(2);
+        $user = $this->fakeUserRepository->findById(2);
         expect($user)->toBe(null);
     });
 
     it('should return user given valid ID', function () {
-        $user = $this->userService->findById(1);
+        $user = $this->fakeUserRepository->findById(1);
         expect($user)->toBeInstanceOf(User::class);
         expect($user->getId())->toBe(1);
         expect($user->getName())->toBe('Name');
@@ -31,8 +29,8 @@ describe('User Eloquent Service', function () {
 
     it('should save a new user', function () {
         $user = new User(2, 'Name 2');
-        $this->userService->save($user);
-        $savedUser = $this->userService->findById(2);
+        $this->fakeUserRepository->save($user);
+        $savedUser = $this->fakeUserRepository->findById(2);
         expect($savedUser)->toBeInstanceOf(User::class);
         expect($savedUser->getId())->toBe(2);
         expect($savedUser->getName())->toBe('Name 2');
