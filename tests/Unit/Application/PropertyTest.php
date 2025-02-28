@@ -14,14 +14,14 @@ describe('Property Service', function () {
     });
 
     it('should return null when invalid ID is given', function () {
-        $property = $this->propertyService->findById('2');
+        $property = $this->propertyService->findById(2);
         expect($property)->toBe(null);
     });
 
     it('should return property given valid ID', function () {
-        $property = $this->propertyService->findById('1');
+        $property = $this->propertyService->findById(1);
         expect($property)->toBeInstanceOf(Property::class);
-        expect($property->getId())->toBe('1');
+        expect($property->getId())->toBe(1);
         expect($property->getName())->toBe('Casa');
         expect($property->getDescription())->toBe('casa de campo');
         expect($property->getMaxOccupants())->toBe(5);
@@ -29,11 +29,11 @@ describe('Property Service', function () {
     });
 
     it('should save a new property', function () {
-        $property = new Property('2', 'Apto', 'Centro', 2, 30000);
+        $property = new Property(2, 'Apto', 'Centro', 2, 30000);
         $this->propertyService->save($property);
-        $savedProperty = $this->propertyService->findById('2');
+        $savedProperty = $this->propertyService->findById(2);
         expect($savedProperty)->toBeInstanceOf(Property::class);
-        expect($savedProperty->getId())->toBe('2');
+        expect($savedProperty->getId())->toBe(2);
         expect($savedProperty->getName())->toBe('Apto');
         expect($savedProperty->getDescription())->toBe('Centro');
         expect($savedProperty->getMaxOccupants())->toBe(2);

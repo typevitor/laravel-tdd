@@ -7,9 +7,9 @@ use App\Exceptions\User\UserEmptyNameException;
 
 class User
 {
-    public function __construct(private readonly string $id, private readonly string $name)
+    public function __construct(private readonly int $id, private readonly string $name)
     {
-        if ($id === '') {
+        if ($id === 0) {
             throw new UserEmptyIdException();
         }
 
@@ -18,7 +18,7 @@ class User
         }
     }
 
-    public function getId(): string
+    public function getId(): int
     {
         return $this->id;
     }

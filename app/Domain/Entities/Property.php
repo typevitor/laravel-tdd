@@ -18,7 +18,7 @@ class Property
     private array $bookings = [];
 
     public function __construct(
-        private readonly string $id,
+        private readonly int $id,
         private readonly string $name,
         private readonly string $description,
         private readonly int $maxOccupants,
@@ -42,7 +42,7 @@ class Property
         $this->bookings[] = $booking;
     }
 
-    public function getId(): string
+    public function getId(): int
     {
         return $this->id;
     }

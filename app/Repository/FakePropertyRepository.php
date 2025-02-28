@@ -11,11 +11,11 @@ class FakePropertyRepository implements IPropertyRepository
     public function __construct()
     {
         $this->properties = [
-            new Property('1', 'Casa', 'casa de campo', 5, 10000),
+            new Property(1, 'Casa', 'casa de campo', 5, 10000),
         ];
     }
 
-    public function findById(string $id): Property|null
+    public function findById(int $id): Property|null
     {
         foreach ($this->properties as $property) {
             if ($property->getId() === $id) {

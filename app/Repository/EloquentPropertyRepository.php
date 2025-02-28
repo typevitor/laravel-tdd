@@ -18,7 +18,7 @@ class EloquentPropertyRepository implements IPropertyRepository
         ]);
     }
 
-    public function findById(string $id): EntitiesProperty|null
+    public function findById(int $id): EntitiesProperty|null
     {
         $modelProperty = Property::find($id);
         if ($modelProperty) {

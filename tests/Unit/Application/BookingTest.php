@@ -70,8 +70,8 @@ describe('Booking Service', function () {
         $this->mockDateRange->shouldReceive('getReservationNights')->andReturn(4);
 
         $bookingDTO = new CreateBookingDTO(
-            "1",
-            "1",
+            1,
+            1,
             \Carbon\Carbon::parse('2025-01-01'),
             \Carbon\Carbon::parse('2025-01-05'),
             5,
@@ -118,8 +118,8 @@ describe('Booking Service', function () {
         $this->mockUserService->shouldReceive('findById')->andReturn(null);
 
         $bookingDTO = new CreateBookingDTO(
-            "1",
-            "2",
+            1,
+            2,
             \Carbon\Carbon::parse('2025-01-01'),
             \Carbon\Carbon::parse('2025-01-05'),
             5,
@@ -188,8 +188,8 @@ describe('Booking Service', function () {
         );
 
         $bookingDTO = new CreateBookingDTO(
-            "1",
-            "1",
+            1,
+            1,
             \Carbon\Carbon::parse('2025-01-01'),
             \Carbon\Carbon::parse('2025-01-05'),
             5,

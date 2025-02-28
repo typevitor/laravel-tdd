@@ -19,29 +19,29 @@ describe('EloquentPropertyRepository', function () {
     });
 
     it('should return null when invalid ID is given', function () {
-        $property = $this->propertyService->findById('2');
+        $property = $this->propertyService->findById(2);
         expect($property)->toBe(null);
     });
 
     it('should return property given valid ID', function () {
-        $property = $this->propertyService->findById('1');
+        $property = $this->propertyService->findById(1);
         expect($property)->toBeInstanceOf(EntitiesProperty::class);
-        expect($property->getId())->toBe('1');
+        expect($property->getId())->toBe(1);
         expect($property->getName())->toBe('Name');
     });
 
     it('should save a new property', function () {
         $property = new EntitiesProperty(
-            '2',
+            2,
             'Name 2',
             'Description 2',
             4,
             20000
         );
         $this->propertyService->save($property);
-        $savedProperty = $this->propertyService->findById('2');
+        $savedProperty = $this->propertyService->findById(2);
         expect($savedProperty)->toBeInstanceOf(EntitiesProperty::class);
-        expect($savedProperty->getId())->toBe('2');
+        expect($savedProperty->getId())->toBe(2);
         expect($savedProperty->getName())->toBe('Name 2');
     });
 });

@@ -9,7 +9,7 @@ class PropertyService
 {
     public function __construct(private readonly IPropertyRepository $iPropertyRepository) {}
 
-    public function findById(string $id): Property|null
+    public function findById(int $id): Property|null
     {
         return $this->iPropertyRepository->findById($id);
     }

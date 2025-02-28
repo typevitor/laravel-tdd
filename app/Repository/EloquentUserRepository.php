@@ -15,12 +15,12 @@ class EloquentUserRepository implements IUserRepository
         ]);
     }
 
-    public function findById(string $id): User|null
+    public function findById(int $id): User|null
     {
         $modelUser = ModelsUser::find($id);
         if ($modelUser) {
             return new User(
-                (string) $modelUser->id,
+                $modelUser->id,
                 $modelUser->name,
             );
         }

@@ -14,8 +14,8 @@ use App\Exceptions\Property\PropertyMaxOccupantsException;
 use Carbon\Carbon;
 
 it('should create an instance of Book given property, user and DateRange and occupants, status', function () {
-    $property = new Property('1', 'Casa', 'Casa', 5, 10000);
-    $user = new User('1', 'UserName');
+    $property = new Property(1, 'Casa', 'Casa', 5, 10000);
+    $user = new User(1, 'UserName');
     $startDate = Carbon::parse('2025-01-01');
     $endDate = Carbon::parse('2025-01-05');
     $dateRange = new DateRange($startDate, $endDate);
@@ -29,9 +29,9 @@ it('should create an instance of Book given property, user and DateRange and occ
 });
 
 it('should throw an exception if number of occupants is zero or lower', function () {
-    $property = new Property('1', 'Name', 'Descripton', 5, 10000);
+    $property = new Property(1, 'Name', 'Descripton', 5, 10000);
     $dateRange = new DateRange(Carbon::parse('2025-01-10'), Carbon::parse('2025-01-18'));
-    $user = new User('1', 'UserName');
+    $user = new User(1, 'UserName');
     expect(fn() => new Booking('1', $property, $user, $dateRange, 0))
         ->toThrow(BookMinimumOccupantsException::class, 'Number of occupants should be higher than zero.');
 });
@@ -74,8 +74,8 @@ it('should book a property without discount', function () {
 
 it('should throw an exception when booking a unavailable property', function () {
     //Arrange
-    $property = new Property('1', 'Casa', 'Casa', 5, 10000);
-    $user = new User('1', 'UserName');
+    $property = new Property(1, 'Casa', 'Casa', 5, 10000);
+    $user = new User(1, 'UserName');
     $startDate = Carbon::parse('2025-01-01');
     $endDate = Carbon::parse('2025-01-05');
     $dateRange = new DateRange($startDate, $endDate);
@@ -93,8 +93,8 @@ it('should throw an exception when booking a unavailable property', function () 
 
 it('should cancel a booking without chargeback when cancel is within 1 day from checkin', function () {
     //Arrange
-    $property = new Property('1', 'Casa', 'Casa', 5, 10000);
-    $user = new User('1', 'UserName');
+    $property = new Property(1, 'Casa', 'Casa', 5, 10000);
+    $user = new User(1, 'UserName');
     $startDate = Carbon::parse('2025-01-10');
     $endDate = Carbon::parse('2025-01-15');
     $dateRange = new DateRange($startDate, $endDate);
@@ -112,8 +112,8 @@ it('should cancel a booking without chargeback when cancel is within 1 day from 
 
 it('should cancel a booking with 100% chargeback when cancel is more than 7 days from checkin', function () {
     //Arrange
-    $property = new Property('1', 'Casa', 'Casa', 5, 10000);
-    $user = new User('1', 'UserName');
+    $property = new Property(1, 'Casa', 'Casa', 5, 10000);
+    $user = new User(1, 'UserName');
     $startDate = Carbon::parse('2025-01-10');
     $endDate = Carbon::parse('2025-01-15');
     $dateRange = new DateRange($startDate, $endDate);
@@ -131,8 +131,8 @@ it('should cancel a booking with 100% chargeback when cancel is more than 7 days
 
 it('should cancel a booking with 50% chargeback when cancel is within 1 to 7 days from checkin', function () {
     //Arrange
-    $property = new Property('1', 'Casa', 'Casa', 5, 10000);
-    $user = new User('1', 'UserName');
+    $property = new Property(1, 'Casa', 'Casa', 5, 10000);
+    $user = new User(1, 'UserName');
     $startDate = Carbon::parse('2025-01-10');
     $endDate = Carbon::parse('2025-01-15');
     $dateRange = new DateRange($startDate, $endDate);
@@ -151,8 +151,8 @@ it('should cancel a booking with 50% chargeback when cancel is within 1 to 7 day
 
 it('should throw an exception if try to cancel a booking that is cancelled', function () {
     //Arrange
-    $property = new Property('1', 'Casa', 'Casa', 5, 10000);
-    $user = new User('1', 'UserName');
+    $property = new Property(1, 'Casa', 'Casa', 5, 10000);
+    $user = new User(1, 'UserName');
     $startDate = Carbon::parse('2025-01-10');
     $endDate = Carbon::parse('2025-01-15');
     $dateRange = new DateRange($startDate, $endDate);

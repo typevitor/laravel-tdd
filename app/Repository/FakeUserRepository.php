@@ -11,11 +11,11 @@ class FakeUserRepository implements IUserRepository
     public function __construct()
     {
         $this->users = [
-            new User('1', 'Name'),
+            new User(1, 'Name'),
         ];
     }
 
-    public function findById(string $id): User|null
+    public function findById(int $id): User|null
     {
         foreach ($this->users as $user) {
             if ($user->getId() === $id) {

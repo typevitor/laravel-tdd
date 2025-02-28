@@ -7,8 +7,8 @@ use Carbon\Carbon;
 class CreateBookingDTO
 {
     public function __construct(
-        public string $propertyId,
-        public string $userId,
+        public int $propertyId,
+        public int $userId,
         public Carbon $startDate,
         public Carbon $endDate,
         public int $occupants,

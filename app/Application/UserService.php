@@ -9,7 +9,7 @@ class UserService
 {
     public function __construct(private readonly IUserRepository $iUserRepository) {}
 
-    public function findById(string $id): User|null
+    public function findById(int $id): User|null
     {
         return $this->iUserRepository->findById($id);
     }
