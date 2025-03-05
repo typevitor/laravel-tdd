@@ -55,6 +55,8 @@ describe('EloquentBookingTest', function () {
         expect($booking->getTotalPrice())->toBe(40000);
         expect($booking->getUser()->getId())->toBe(1);
         expect($booking->getProperty()->getId())->toBe(3);
+        expect($booking->getDateRange()->getStartDate()->format('Y-m-d'))->toBe('2025-01-01');
+        expect($booking->getDateRange()->getEndDate()->format('Y-m-d'))->toBe('2025-01-05');
     });
 
     it('should return null when searching for a invalid Booking', function () {
@@ -91,6 +93,8 @@ describe('EloquentBookingTest', function () {
 
         $booking = $this->fakeBookingRepository->findById('1');
         expect($booking->getBookStatus())->toBe(BookStatus::CONFIRMED);
+        expect($booking->getDateRange()->getStartDate()->format('Y-m-d'))->toBe('2025-01-01');
+        expect($booking->getDateRange()->getEndDate()->format('Y-m-d'))->toBe('2025-01-05');
         $booking->cancel(\Carbon\Carbon::parse('2024-12-20'));
         expect($booking->getBookStatus())->toBe(BookStatus::CANCELLED);
     });

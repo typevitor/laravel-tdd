@@ -16,7 +16,6 @@ class BookingService
         private readonly IBookingRepository $iBookingRepository,
         private readonly PropertyService $propertyService,
         private readonly UserService $userService,
-        private readonly DateRange $dateRange,
     ) {}
 
     public function findById(string $id): Booking|null
@@ -41,7 +40,7 @@ class BookingService
             Str::uuid()->toString(),
             $property,
             $user,
-            $this->dateRange,
+            new DateRange($bookingDTO->startDate, $bookingDTO->endDate),
             $bookingDTO->occupants
         );
 

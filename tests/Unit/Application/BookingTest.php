@@ -31,14 +31,10 @@ describe('BookingService', function () {
         /** @var MockObject|UserService */
         $this->date = Mockery::mock(UserService::class);
 
-        /** @var MockObject|DateRange */
-        $this->mockDateRange = Mockery::mock(DateRange::class);
-
         $this->bookingService = new BookingService(
             $this->fakeBookingRepository,
             $this->mockPropertyService,
-            $this->mockUserService,
-            $this->mockDateRange
+            $this->mockUserService
         );
     });
 
@@ -64,10 +60,6 @@ describe('BookingService', function () {
         $mockUser = Mockery::mock(User::class);
         $mockUser->shouldReceive('getId')->andReturn('1');
         $this->mockUserService->shouldReceive('findById')->andReturn($mockUser);
-
-        $this->mockDateRange->shouldReceive('getStartDate')->andReturn(\Carbon\Carbon::parse('2025-01-01'));
-        $this->mockDateRange->shouldReceive('getEndDate')->andReturn(\Carbon\Carbon::parse('2025-01-05'));
-        $this->mockDateRange->shouldReceive('getReservationNights')->andReturn(4);
 
         $bookingDTO = new CreateBookingDTO(
             1,
@@ -173,10 +165,6 @@ describe('BookingService', function () {
         $mockUser->shouldReceive('getId')->andReturn('1');
         $this->mockUserService->shouldReceive('findById')->andReturn($mockUser);
 
-        $this->mockDateRange->shouldReceive('getStartDate')->andReturn(\Carbon\Carbon::parse('2025-01-01'));
-        $this->mockDateRange->shouldReceive('getEndDate')->andReturn(\Carbon\Carbon::parse('2025-01-05'));
-        $this->mockDateRange->shouldReceive('getReservationNights')->andReturn(4);
-
         $bookingSpy = \Mockery::spy($this->fakeBookingRepository);
         $bookingSpy->shouldAllowMockingMethod('save');
         $bookingSpy->shouldAllowMockingMethod('cancel');
@@ -184,7 +172,6 @@ describe('BookingService', function () {
             $bookingSpy,
             $this->mockPropertyService,
             $this->mockUserService,
-            $this->mockDateRange
         );
 
         $bookingDTO = new CreateBookingDTO(
