@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ApiBookingsController;
 use App\Http\Controllers\Api\ApiProductsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -22,3 +23,5 @@ Route::middleware(
 });
 
 Route::apiResource('products', ApiProductsController::class);
+
+Route::post('v1/bookings', [ApiBookingsController::class,  'store']);

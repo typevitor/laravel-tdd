@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Repository\EloquentBookingRepository;
 use App\Repository\EloquentPropertyRepository;
 use App\Repository\EloquentUserRepository;
+use App\Repository\IBookingRepository;
 use App\Repository\IPropertyRepository;
 use App\Repository\IUserRepository;
 use Illuminate\Support\ServiceProvider;
@@ -29,6 +31,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(IUserRepository::class, EloquentUserRepository::class);
         $this->app->bind(IPropertyRepository::class, EloquentPropertyRepository::class);
+        $this->app->bind(IBookingRepository::class, EloquentBookingRepository::class);
 
     }
 }
