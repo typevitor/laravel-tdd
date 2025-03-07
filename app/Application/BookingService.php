@@ -5,6 +5,7 @@ namespace App\Application;
 use App\Application\DTO\CreateBookingDTO;
 use App\Domain\Entities\Booking;
 use App\Domain\ValueObjects\DateRange;
+use App\Exceptions\Booking\BookingNotFoundException;
 use App\Exceptions\Property\PropertyNotFoundException;
 use App\Exceptions\User\UserNotFoundException;
 use App\Repository\IBookingRepository;
@@ -51,6 +52,9 @@ class BookingService
     public function cancel(string $id): void
     {
         $booking = $this->findById($id);
+        if (!$booking) {
+            throw new BookingNotFoundException();
+        }
         $booking->cancel(new \Carbon\Carbon('now'));
         $this->iBookingRepository->save($booking);
     }

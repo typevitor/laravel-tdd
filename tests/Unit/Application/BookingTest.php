@@ -11,6 +11,7 @@ use App\Domain\Entities\Property;
 use App\Domain\Entities\User;
 use App\Domain\ValueObjects\DateRange;
 use App\Enum\BookStatus;
+use App\Exceptions\Booking\BookingNotFoundException;
 use App\Exceptions\Booking\UnavaliablePropertyException;
 use App\Exceptions\Property\PropertyNotFoundException;
 use App\Exceptions\User\UserNotFoundException;
@@ -190,5 +191,20 @@ describe('BookingService', function () {
         $bookingSpy->shouldHaveReceived('findById')->twice();
         $bookingSpy->shouldHaveReceived('findById')->with($booking->getId());
 
+    });
+
+    test('should throw exception when cancel a unkown booking', function() {
+        $bookingSpy = \Mockery::spy($this->fakeBookingRepository);
+        $bookingSpy->shouldAllowMockingMethod('save');
+        $bookingSpy->shouldAllowMockingMethod('cancel');
+        $bookingService = new BookingService(
+            $bookingSpy,
+            $this->mockPropertyService,
+            $this->mockUserService,
+        );
+        $bookingSpy->shouldNotHaveReceived('cancel');
+        expect(function () use ($bookingService) {
+            $bookingService->cancel('1');
+        })->toThrow(BookingNotFoundException::class);
     });
 });

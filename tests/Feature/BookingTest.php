@@ -86,3 +86,36 @@ test('should return error with an invalid property', function () {
         ->assertStatus(400)
         ->assertJsonStructure(['message']);
 });
+
+
+test('should cancel a property', function () {
+    $booking = [
+        'property_id' => $this->property->id,
+        'user_id' => $this->user->id,
+        'start_date' => '2025-01-20',
+        'end_date' => '2025-01-25',
+        'occupants' => 2
+    ];
+    $response = $this->post('/api/v1/bookings', $booking);
+    $bookingId = $response->json('data.id');
+
+    $this->post("/api/v1/bookings/{$bookingId}/cancel",[])
+        ->assertStatus(200)
+        ->assertJsonFragment(['message' => 'Booking canceled successfully']);
+});
+
+// test('should return error when canceling an invalid booking', function () {
+//     $booking = [
+//         'property_id' => $this->property->id,
+//         'user_id' => $this->user->id,
+//         'start_date' => '2025-01-20',
+//         'end_date' => '2025-01-25',
+//         'occupants' => 2
+//     ];
+//     $this->post('/api/v1/bookings', $booking);
+
+//     $this->patch("/api/v1/bookings/invalid-id/cancel",[])
+//     ->assertStatus(404)
+//     ->assertJsonFragment(['message' => 'Booking not found']);
+
+// });
