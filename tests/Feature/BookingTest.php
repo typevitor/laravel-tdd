@@ -59,3 +59,30 @@ test('should return error with an start date higher than end date', function () 
         ->assertStatus(422)
         ->assertJsonStructure(['message']);
 });
+
+
+test('should return error with an invalid user', function () {
+    $booking = [
+        'property_id' => $this->property->id,
+        'user_id' => 200,
+        'start_date' => '2025-01-20',
+        'end_date' => '2025-01-25',
+        'occupants' => 2
+    ];
+    $this->post('/api/v1/bookings', $booking)
+        ->assertStatus(400)
+        ->assertJsonStructure(['message']);
+});
+
+test('should return error with an invalid property', function () {
+    $booking = [
+        'property_id' => 200,
+        'user_id' => $this->user->id,
+        'start_date' => '2025-01-20',
+        'end_date' => '2025-01-25',
+        'occupants' => 2
+    ];
+    $this->post('/api/v1/bookings', $booking)
+        ->assertStatus(400)
+        ->assertJsonStructure(['message']);
+});
