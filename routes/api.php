@@ -24,4 +24,5 @@ Route::middleware(
 
 Route::apiResource('products', ApiProductsController::class);
 
+Route::post('v1/bookings/{bookingId}/cancel', [ApiBookingsController::class,  'cancel']);
 Route::post('v1/bookings', [ApiBookingsController::class,  'store']);

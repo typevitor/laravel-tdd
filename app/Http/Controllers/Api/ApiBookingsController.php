@@ -44,4 +44,14 @@ class ApiBookingsController extends Controller
             return response()->json(['message' => $e->getMessage()], 400);
         }
     }
+
+    public function cancel($bookingId)
+    {
+        try {
+            $this->bookingService->cancel($bookingId);
+            return response()->json(['message' => 'Booking canceled successfully']);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 400);
+        }
+    }
 }
