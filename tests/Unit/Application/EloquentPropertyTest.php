@@ -21,6 +21,14 @@ describe('EloquentPropertyRepository', function () {
     });
 
     it('should return property given valid ID', function () {
+        $property = new EntitiesProperty(
+            1,
+            'Name',
+            'Description',
+            4,
+            20000
+        );
+        $this->fakePropertyRepository->save($property);
         $property = $this->fakePropertyRepository->findById(1);
         expect($property)->toBeInstanceOf(EntitiesProperty::class);
         expect($property->getId())->toBe(1);

@@ -21,6 +21,8 @@ describe('User Eloquent Service', function () {
     });
 
     it('should return user given valid ID', function () {
+        $user = new User(1, 'Name');
+        $this->fakeUserRepository->save($user);
         $user = $this->fakeUserRepository->findById(1);
         expect($user)->toBeInstanceOf(User::class);
         expect($user->getId())->toBe(1);

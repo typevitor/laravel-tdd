@@ -9,13 +9,6 @@ class EloquentPropertyRepository implements IPropertyRepository
 {
     public function __construct()
     {
-        Property::factory()->create([
-            'id' => '1',
-            'name' => 'Name',
-            'description' => 'Description',
-            'max_occupants' => 5,
-            'price_per_night' => 10000,
-        ]);
     }
 
     public function findById(int $id): EntitiesProperty|null

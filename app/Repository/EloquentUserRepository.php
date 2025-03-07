@@ -9,10 +9,6 @@ class EloquentUserRepository implements IUserRepository
 {
     public function __construct()
     {
-        ModelsUser::factory()->create([
-            'id' => '1',
-            'name' => 'Name',
-        ]);
     }
 
     public function findById(int $id): User|null
